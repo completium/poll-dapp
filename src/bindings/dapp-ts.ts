@@ -42,8 +42,12 @@ export const call = async (addr: string, name: string, arg: Micheline, p: Parame
   })
 }
 
-export const get_balance = (addr : Address) : Tez => {
-  return new Tez(0)
+export const get_balance = async (addr : Address) : Promise<Tez> => {
+  const res = await tezos?.tz.getBalance(addr.toString());
+  if (res === undefined) {
+    throw new Error("Error: get_balance");
+  }
+  return new Tez(res, "mutez")
 }
 
 export const get_storage = async (addr : string) : Promise<any> => {
@@ -52,8 +56,9 @@ export const get_storage = async (addr : string) : Promise<any> => {
   })
 }
 
-export const get_big_map_value = async (id : BigInt, m : Micheline, mt : MichelineType) : Promise<Micheline> => {
-  return none_mich
+export const get_big_map_value = async (id : BigInt, m : Micheline, mt : MichelineType) : Promise<any> => {
+  const res = none_mich;
+  return res
 }
 
 export const exec_view = async (address : Address, entry : string, arg : Micheline, params : Parameters) : Promise<any> => {
