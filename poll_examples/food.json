@@ -1,0 +1,11 @@
+{
+  "utterance" : "What is your favorite food?",
+  "img" : "https://1.bp.blogspot.com/-WOrNura8t1g/W6ufizUlixI/AAAAAAAAA38/X05agj6atWcxyyaRgOl07jMeaZnuF7JwgCLcBGAs/w1200-h630-p-k-no-nu/World-Food-Day.jpg",
+  "choices" : [
+    "Pizza",
+    "Burger",
+    "Sushi",
+    "Tacos",
+    "Croissant"
+  ]
+}

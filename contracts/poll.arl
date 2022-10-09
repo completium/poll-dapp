@@ -1,0 +1,50 @@
+archetype poll(owner : address)
+
+constant CANNOT_RESPOND_TWICE : string = "CANNOT_RESPOND_TWICE"
+constant NON_EMPTY_SELECTIONS : string = "NON_EMPTY_SELECTIONS"
+constant POLL_NOT_FOUND       : string = "POLL_NOT_FOUND"
+
+asset poll {
+  ipfs_hash : bytes;
+  responses : map<nat, nat> = [];
+}
+
+asset responder identified by poll_hash addr to big_map {
+  poll_hash : bytes;
+  addr : address;
+}
+
+enum poll_action =
+| Add<bytes>
+| Remove<bytes>
+
+entry manage_poll(a : poll_action) {
+  match a with
+  | Add(h) -> poll.add({ ipfs_hash = h })
+  | Remove(h) -> begin
+      do_require(caller = owner, "INVALID_CALLER");
+      poll.remove(h)
+    end
+  end
+}
+
+entry respond(hash : bytes, choice_id : nat) {
+  constant {
+    r_key is (hash, caller);
+    selection_count is poll[hash] ? (the.responses[choice_id] ? the : 0) : 0;
+  }
+  require {
+    r1 : poll.contains(hash)           otherwise POLL_NOT_FOUND;
+    r2 : not responder.contains(r_key) otherwise CANNOT_RESPOND_TWICE
+  }
+  effect {
+    responder.add_update(r_key, {});
+    poll.update(hash, {
+      responses += [(choice_id, selection_count + 1)]
+    });
+  }
+}
+
+view get_responses(hash : bytes) : map<nat, nat> {
+  return poll[hash].responses
+}

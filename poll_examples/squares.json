@@ -1,0 +1,11 @@
+{
+  "utterance" : "How many squares?",
+  "img" : "https://i.stack.imgur.com/7ruLN.jpg",
+  "choices" : [
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ]
+}
