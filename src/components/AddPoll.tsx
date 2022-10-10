@@ -1,20 +1,21 @@
-import Container from '@mui/material/Container';
-import { useAppState } from '../constate/AppState';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Grid2 from '@mui/material/Unstable_Grid2';
-import { Box, Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
-import React from 'react';
-import { UIPoll, usePollUtils } from '../constate/PollData';
-import { PollUI } from './PollUI';
-import { Poll } from '../constate/PollData';
-import { useIPFSBrowser } from '../constate/Settings';
-import { usePollContract } from '../constate/PollContract';
-import { Add } from '../bindings/poll';
 import { Bytes } from '@completium/archetype-ts-types';
+import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, Typography } from '@mui/material';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import React from 'react';
+
+import { Add } from '../bindings/poll';
+import { useAppState } from '../store/AppState';
+import { usePollContract } from '../store/PollContract';
+import { UIPoll, usePollUtils } from '../store/PollData';
+import { Poll } from '../store/PollData';
+import { useIPFSBrowser } from '../store/Settings';
+import { PollPanel } from './PollPanel';
 
 const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll | undefined>> }) => {
   const [uri, setURI] = React.useState('');
@@ -98,7 +99,7 @@ const PollPreview = (arg : { uip : UIPoll | undefined }) => {
     const setChoice : React.Dispatch<React.SetStateAction<number | undefined>> = n => {}
     const poll : Poll = { ...arg.uip, id : "", responses : [] }
     return <Box sx={{ p: 2, border: '1px dashed grey' }}>
-        <PollUI
+        <PollPanel
         preview={true}
         poll={poll}
         choice={undefined}

@@ -1,11 +1,11 @@
-import Button from '@mui/material/Button';
-import { useWalletAddress, useWalletUtils } from '../constate/BeaconWallet';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import React from 'react';
 
+import { useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
+import { useEndpoint, useNetwork } from '../store/Settings';
+import { useTezos } from '../store/Taquito';
 import { WalletInfo } from './WalletInfo';
-import { useEndpoint, useNetwork } from '../constate/Settings';
-import { useTezos } from '../constate/Taquito';
 
 export const LoginButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);

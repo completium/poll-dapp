@@ -1,11 +1,12 @@
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 //import Grid2 from '@mui/material/Grid2';
 import Grid2 from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { getPolls } from '../constate/PollData';
+
+import { useAppState } from '../store/AppState';
+import { getPolls } from '../store/PollData';
 import { PollCard } from './PollCard';
-import Button from '@mui/material/Button';
-import { useAppState } from '../constate/AppState';
 
 export const PickPoll = () => {
   const setAdd = useAppState().setAdd

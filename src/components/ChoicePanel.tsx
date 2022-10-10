@@ -1,7 +1,3 @@
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import Filter1Icon from '@mui/icons-material/Filter1';
 import Filter2Icon from '@mui/icons-material/Filter2';
 import Filter3Icon from '@mui/icons-material/Filter3';
@@ -11,8 +7,12 @@ import Filter6Icon from '@mui/icons-material/Filter6';
 import Filter7Icon from '@mui/icons-material/Filter7';
 import Filter8Icon from '@mui/icons-material/Filter8';
 import Filter9Icon from '@mui/icons-material/Filter9';
-import React from 'react';
+import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import { useState } from 'react';
+import React from 'react';
 
 const getIdIcon = (id : number, selected : boolean) => {
   switch (id) {
@@ -34,7 +34,7 @@ const getGradient = (firstcolor : string, secondColor : string, ratio : number) 
   return "linear-gradient(90deg, " + firstcolor + " " + percent + "%, " + secondColor + " " + percent + "%)"
 }
 
-export const Choice  = (arg : {
+export const ChoicePanel  = (arg : {
   choice_id : number,
   label : string,
   selected : boolean,

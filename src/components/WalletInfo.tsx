@@ -1,15 +1,16 @@
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import { useBeaconWallet, useWalletAddress, useWalletUtils } from '../constate/BeaconWallet';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useEndpoint, useNetwork } from '../constate/Settings';
 import { useEffect, useState } from 'react';
-import { useTezos } from '../constate/Taquito';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+
+import { useBeaconWallet, useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
+import { useEndpoint, useNetwork } from '../store/Settings';
+import { useTezos } from '../store/Taquito';
 
 export const Address = (arg : { address : string | undefined }) => {
   return <Grid2 container spacing={0} alignItems="flex-end">

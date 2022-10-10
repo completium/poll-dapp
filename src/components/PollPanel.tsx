@@ -1,66 +1,48 @@
-import { useAppState } from "../constate/AppState"
-import { getPolls, Poll, usePollUtils } from "../constate/PollData"
-import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { useState } from "react";
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
-import { PollUI } from "./PollUI";
-import { usePollContract } from "../constate/PollContract";
-import { Bytes, Nat } from "@completium/archetype-ts-types";
+import React from 'react';
 
-const getPoll = (polls : Array<Poll>, id : string) : Poll => {
-  const poll = polls.find(x => x.id === id)
-  if (poll !== undefined) {
-    return poll
+import { Poll } from "../store/PollData";
+import { ChoicePanel } from "./ChoicePanel";
+
+const getResponseCount = (choice_id : number, responses : Array<[ number, number ]>) : number => {
+  for (let i = 0; i < responses.length; i++ ) {
+    if (responses[i][0] === choice_id) return responses[i][1]
   }
-  throw new Error("getPoll: '" + id + "' not found")
+  return 0
 }
 
-export const PollPanel = () => {
-  const [choice, setChoice] = useState<number | undefined>(undefined)
-  const [loading, setLoading] = useState(false)
-  const contract = usePollContract()
-  const polls = getPolls()
-  const selected = useAppState().selected
-  const setPick = useAppState().setPick
-  const setResponses = usePollUtils().setResponses
-  if (selected === undefined) throw new Error("PollPanel : 'selected' not defined")
-  const [bar, setBar] = useState(false)
-  const poll = getPoll(polls, selected)
-  const total = poll.responses.reduce((acc, x) => { return acc + x[1] }, 0)
-  const respond = async () => {
-    setLoading(true)
-    try {
-      console.log(choice)
-      if (choice !== undefined) {
-        await contract.respond(Bytes.hex_encode(selected), new Nat(choice), {})
-        setLoading(false)
-        setChoice(undefined)
-        const responses = await contract.view_get_responses(Bytes.hex_encode(poll.id), {})
-        setResponses(poll.id, responses)
-        setBar(true)
-      }
-    } catch(e) {
-      console.log(e)
-      setLoading(false)
-    }
-  }
-  return <Container>
-    <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={() => setPick()}><CloseIcon fontSize="inherit"/></IconButton>
-    <Grid2 container direction="row" justifyContent="center" alignItems="center">
-      <PollUI preview={false} poll={poll} choice={choice} setChoice={setChoice} bar={bar} total={total}/>
-      <Grid2 xs={12} sx={{ mt : '18px', mb : '18px' }} container justifyContent='center'>
-        <LoadingButton
-          onClick={respond}
-          loading={loading}
-          endIcon={<SendIcon />}
-          disabled={choice === undefined}>
-          Submit
-        </LoadingButton>
+export const PollPanel = (arg : {
+  preview : boolean,
+  poll : Poll,
+  choice : number | undefined,
+  bar : boolean,
+  total : number,
+  setChoice : React.Dispatch<React.SetStateAction<number | undefined>>
+}) => {
+  return <Grid2 container direction="row" justifyContent="center" alignItems="center">
+    <Grid2 sx={ arg.preview ? {} : { pl : '80px', pr: '80px' }}>
+        <Typography variant="h2" sx={{ mt : '80px', mb : '40px', fontFamily: 'Dancing Script', justifyContent : 'center' }}>
+          { arg.poll.utterance }
+        </Typography>
       </Grid2>
-    </Grid2>
-  </Container>
+      <Grid2 xs={12} container justifyContent="center">
+        <img src={arg.poll.img} alt={"" + arg.poll.id}  style={{ height: '220px' }}></img>
+      </Grid2>
+      <Grid2 md={arg.preview ? 12 : 4} sm={arg.preview ? 12 : 6} xs={12} sx={{ mt: '40px' }} container>
+        { arg.poll.choices.map((label, i) => {
+          return <Grid2 xs={12} key={label}>
+            <ChoicePanel
+              selected={arg.choice === i}
+              set_choice={arg.setChoice}
+              choice_id={i}
+              label={label}
+              bar={arg.bar}
+              total={arg.total}
+              responders={getResponseCount(i, arg.poll.responses)}
+            />
+          </Grid2>
+        }) }
+      </Grid2>
+  </Grid2>
 }

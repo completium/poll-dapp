@@ -1,10 +1,11 @@
-import { Poll } from '../constate/PollData'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useAppState } from '../constate/AppState';
+
+import { useAppState } from '../store/AppState';
+import { Poll } from '../store/PollData'
 
 export const PollCard = (arg : { data : Poll }) => {
   const setRespond = useAppState().setRespond
