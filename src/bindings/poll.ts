@@ -192,7 +192,7 @@ export class Poll {
     async get_responder_value(key: responder_key): Promise<responder_value | undefined> {
         if (this.address != undefined) {
             const storage = await ex.get_storage(this.address);
-            const data = await ex.get_big_map_value(BigInt(storage.responder), key.to_mich(), responder_key_mich_type), collapsed = true;
+            const data = await ex.get_big_map_value(BigInt(storage.responder), key.to_mich(), responder_key_mich_type, responder_value_mich_type), collapsed = true;
             if (data != undefined) {
                 return mich_to_responder_value(data, true);
             }
@@ -205,7 +205,7 @@ export class Poll {
     async has_responder_value(key: responder_key): Promise<boolean> {
         if (this.address != undefined) {
             const storage = await ex.get_storage(this.address);
-            const data = await ex.get_big_map_value(BigInt(storage.responder), key.to_mich(), responder_key_mich_type), collapsed = true;
+            const data = await ex.get_big_map_value(BigInt(storage.responder), key.to_mich(), responder_key_mich_type, responder_value_mich_type), collapsed = true;
             if (data != undefined) {
                 return true;
             }
