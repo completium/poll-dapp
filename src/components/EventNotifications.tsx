@@ -6,9 +6,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Grid, Typography } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Popover from '@mui/material/Popover';
 
 import { useClearEvents, useEvents, useNbNewEvents, useOpenEvents } from '../store/Events';
 import { useEndpoint } from '../store/Settings';
@@ -97,25 +99,30 @@ export const EventNotifications = () => {
           <NotificationsIcon />
         </Badge>
       </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
+      <Popover
+        id={open ? 'simple-popover' : undefined}
         open={open}
+        anchorEl={anchorEl}
         onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
         }}
-        >
-        <Grid direction="column" container spacing={1} style={{ width: "600px" }}>
-          <Grid item>
-            <NotificationMenu />
-          </Grid>
-          { events.length > 0 ? events.reverse().map((e,i) => {
-            return (
-              <Grid key={"event-card-"+i} item ><EventCard data={e}/></Grid>
-            )
-          }) : <NoEventCard /> }
-        </Grid>
-      </Menu>
+      >
+        <Card>
+          <CardContent>
+            <Grid direction="column" container spacing={1} style={{ width: "600px" }}>
+              <Grid item>
+                <NotificationMenu />
+              </Grid>
+              { events.length > 0 ? events.reverse().map((e,i) => {
+                return (
+                  <Grid key={"event-card-"+i} item ><EventCard data={e}/></Grid>
+                )
+              }) : <NoEventCard /> }
+            </Grid>
+          </CardContent>
+        </Card>
+      </Popover>
     </div>)
 }
