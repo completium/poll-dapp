@@ -8,6 +8,7 @@ import { RespondPoll } from './components/RespondPoll';
 import { TopBar } from './components/TopBar'
 import { StateProvider, UIState, useAppState } from './store/AppState';
 import { BeaconWalletProvider } from './store/BeaconWallet'
+import { EventsProvider } from './store/Events';
 import { PollContractProvider } from './store/PollContract';
 import { PollDataProvider } from './store/PollData';
 import { SettingsProvider, Theme, useTheme } from './store/Settings';
@@ -38,12 +39,14 @@ function DApp() {
           <PollContractProvider>
             <StateProvider>
               <PollDataProvider>
-                <Paper elevation={0}>
-                  <div style={{ height: '100vh', overflow: 'auto' }}>
-                    <TopBar></TopBar>
-                    <MainPanel />
-                  </div>
-                </Paper>
+                <EventsProvider>
+                  <Paper elevation={0}>
+                    <div style={{ height: '100vh', overflow: 'auto' }}>
+                      <TopBar></TopBar>
+                      <MainPanel />
+                    </div>
+                  </Paper>
+                </EventsProvider>
               </PollDataProvider>
             </StateProvider>
           </PollContractProvider>
