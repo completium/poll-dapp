@@ -11,10 +11,12 @@ import React from 'react';
 
 import { Add } from '../bindings/poll';
 import { useAppState } from '../store/AppState';
+import { useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
 import { usePollContract } from '../store/PollContract';
 import { UIPoll, usePollUtils } from '../store/PollData';
 import { Poll } from '../store/PollData';
-import { useIPFSBrowser } from '../store/Settings';
+import { useEndpoint, useIPFSBrowser, useNetwork } from '../store/Settings';
+import { useTezos } from '../store/Taquito';
 import { PollPanel } from './PollPanel';
 
 const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll | undefined>> }) => {
@@ -26,9 +28,17 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
   const contract = usePollContract()
   const loadData = usePollUtils().loadData
   const setPick = useAppState().setPick
+  const wallet_address = useWalletAddress()
+  const connect = useWalletUtils().connect
+  const tezos = useTezos()
+  const network = useNetwork()
+  const endpoint = useEndpoint()
   const addPoll = async () => {
     setLoading(true)
     try {
+      if (wallet_address === undefined) {
+        await connect(tezos, network, endpoint)
+      }
       await contract.manage_poll(new Add(Bytes.hex_encode(uri)), {})
       await loadData()
       setLoading(false)
