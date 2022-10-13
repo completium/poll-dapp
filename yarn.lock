@@ -1199,10 +1199,10 @@
   dependencies:
     "bignumber.js" "^9.0.2"
 
-"@completium/dapp-ts@^0.0.3":
-  "integrity" "sha512-u7gcsRxEdf58zuBzZL6O9uOxTH0p8U8fwfGeJZDiOKou9UKdMIX3V1Q1pn+0cyZ9EZ3ln9dHVbxRUcojB7rIdQ=="
-  "resolved" "https://registry.npmjs.org/@completium/dapp-ts/-/dapp-ts-0.0.3.tgz"
-  "version" "0.0.3"
+"@completium/dapp-ts@^0.0.4":
+  "integrity" "sha512-FqPzQ4ATQjLC8/TEB462Pdf7DABVx7KP9fTnsYOKOHQIt60YJVoqWd2F369V720CGLad6S1C/LRhENvopuZe0Q=="
+  "resolved" "https://registry.npmjs.org/@completium/dapp-ts/-/dapp-ts-0.0.4.tgz"
+  "version" "0.0.4"
   dependencies:
     "@completium/archetype-ts-types" "^0.0.6"
     "@taquito/michel-codec" "^14.0.0"
