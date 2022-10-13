@@ -28,12 +28,12 @@ export const [
   () => {
     const [settingState, setState] = useState({
       app_name        : 'Poll DAPP',
-      endpoint        : 'https://kathmandunet.ecadinfra.com',
-      poll_contract   : 'KT1P2qjxVHXzbDvXU1DiyN7hZgpRWspevHNJ',
+      endpoint        : 'https://ghostnet.ecadinfra.com',
+      poll_contract   : 'KT1Ac8DrmUihi2YxzSfKg5qERbYpB9msSeWA',
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
-      network         :  NetworkType.KATHMANDUNET,
+      network         :  NetworkType.GHOSTNET,
       theme           :  Theme.Dark,
-      git_repo        : 'https://github.com/completium/first-dapp/tree/main/src'
+      git_repo        : 'https://github.com/completium/poll-dapp/tree/main/src'
     });
     const switchTheme = () => { setState(s => { return { ...s, theme : switch_theme(s.theme) }}) }
     return { settingState, setters : { switchTheme } };
