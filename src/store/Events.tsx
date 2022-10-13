@@ -52,7 +52,7 @@ function useEventsState() {
       await run_listener({
         endpoint: endpoint,
         verbose: true,
-        horizon: 2
+        horizon: 0
       })
     };
     startListener()
