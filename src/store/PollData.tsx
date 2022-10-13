@@ -1,6 +1,7 @@
 import { Nat } from '@completium/archetype-ts-types';
 import constate from 'constate';
 import { useEffect, useState } from 'react';
+import { poll_container } from '../bindings/poll';
 
 import { usePollContract } from './PollContract';
 import { useIPFSBrowser } from './Settings';
@@ -40,7 +41,7 @@ export const [
         polls.push({
           ...ui,
           id : hash,
-          responses : poll_data[i][1]
+          responses : poll_data[i][1].map(x => [ x[0].to_big_number().toNumber(), x[1].to_big_number().toNumber() ])
         })
       }
       setPolls(polls)
