@@ -1211,10 +1211,10 @@
     "@taquito/utils" "^14.0.0"
     "bignumber.js" "^9.0.2"
 
-"@completium/event-listener@^0.0.2":
-  "integrity" "sha512-ujr6hRdoABJ8UW8Wksg6AI+bBjTQl3A4K6T3zjMOdTscqkBjtwu+zu5uprKJJzOyPZrJQhJjoXWqzlk3WLvXwA=="
-  "resolved" "https://registry.npmjs.org/@completium/event-listener/-/event-listener-0.0.2.tgz"
-  "version" "0.0.2"
+"@completium/event-listener@^0.0.4":
+  "integrity" "sha512-c9EqhT3bad1RB4WJ+Oih9WaXlxl/CFOHc1EuDN8oKihPo/nMIlAS0EN7FjnLdnOs6YZA0pebt5IyJswCBVBgBQ=="
+  "resolved" "https://registry.npmjs.org/@completium/event-listener/-/event-listener-0.0.4.tgz"
+  "version" "0.0.4"
   dependencies:
     "@taquito/michel-codec" "^14.0.0"
     "@taquito/rpc" "^14.0.0"
