@@ -34,7 +34,6 @@ function MakeBeaconWallet() {
 
   React.useEffect(() => {
     // to be executed on mount
-    console.log("init beaconwallet")
     tezos.setWalletProvider(beaconState.wallet)
     beaconState.wallet?.client.getActiveAccount().then(account => {
       let address : string | undefined = undefined

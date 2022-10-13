@@ -63,7 +63,6 @@ export const RespondPoll = () => {
   useEffect(() => {
     if (wallet_address) {
       const load_responses = async () => {
-        console.log("load_responses");
         const responded = await contract.has_responder_value(new responder_key(Bytes.hex_encode(poll.id), new Address(wallet_address)))
         if (responded) {
           const responses = await contract.view_get_responses(Bytes.hex_encode(poll.id), {})

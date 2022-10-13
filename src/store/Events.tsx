@@ -36,7 +36,6 @@ function useEventsState() {
   }, [])
   useEffect(() => {
     const startListener = async () => {
-      console.log("running event listener")
       contract.register_Response(async (e : Response, d ?: EventData) => {
         setAlertMsg(make_response_msg(e))
         setAlerOpen(true)
@@ -51,7 +50,7 @@ function useEventsState() {
       })
       await run_listener({
         endpoint: endpoint,
-        verbose: true,
+        verbose: false,
         horizon: 0
       })
     };
