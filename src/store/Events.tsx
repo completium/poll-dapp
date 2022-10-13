@@ -56,7 +56,7 @@ function useEventsState() {
       })
     };
     startListener()
-  })
+  }, [])
   return { events, nbNewEvents, openEvents, addEvent, clearEvents };
 }
 
