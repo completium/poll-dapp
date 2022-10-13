@@ -29,7 +29,7 @@ export const [
     const [settingState, setState] = useState({
       app_name        : 'Poll DAPP',
       endpoint        : 'https://kathmandunet.ecadinfra.com',
-      poll_contract   : 'KT1W2bskp2pDHusTTkPhfLAvTHJbeSTWEGom',
+      poll_contract   : 'KT1P2qjxVHXzbDvXU1DiyN7hZgpRWspevHNJ',
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
       network         :  NetworkType.KATHMANDUNET,
       theme           :  Theme.Dark,
