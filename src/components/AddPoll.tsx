@@ -35,7 +35,6 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
       setIsValidURI(false)
       setPick()
     } catch (e) {
-      console.log(e)
       setLoading(false)
     }
   }
@@ -47,7 +46,6 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
       if (url !== "") {
         const res = await fetch(ipfsBrowser + url)
         const uip : UIPoll = await res.json()
-        console.log(uip)
         arg.setUIPoll(uip)
         setIsValidURI(true)
       } else {

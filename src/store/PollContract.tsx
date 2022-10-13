@@ -1,11 +1,10 @@
+import { set_binder_tezos_toolkit } from '@completium/dapp-ts';
+import constate from 'constate';
 import { useState } from 'react';
 
-import constate from 'constate';
-
-import { set_binder_tezos_toolkit } from '../bindings/dapp-ts';
 import { Poll } from '../bindings/poll';
-import { useTezos } from './Taquito';
 import { usePollAddress } from './Settings';
+import { useTezos } from './Taquito';
 
 export const [
   PollContractProvider,

@@ -35,7 +35,6 @@ export const RespondPoll = () => {
   const respond = async () => {
     setLoading(true)
     try {
-      console.log(choice)
       if (choice !== undefined) {
         await contract.respond(Bytes.hex_encode(selected), new Nat(choice), {})
         setLoading(false)

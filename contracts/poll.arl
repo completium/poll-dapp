@@ -18,14 +18,28 @@ enum poll_action =
 | Add<bytes>
 | Remove<bytes>
 
+event NewPoll {
+  creator : address;
+  poll_id : bytes
+}
+
 entry manage_poll(a : poll_action) {
   match a with
-  | Add(h) -> poll.add({ ipfs_hash = h })
+  | Add(h) -> begin
+      poll.add({ ipfs_hash = h });
+      emit<NewPoll>({ caller; h })
+    end
   | Remove(h) -> begin
       do_require(caller = owner, "INVALID_CALLER");
       poll.remove(h)
     end
   end
+}
+
+event Response {
+  responder_addr : address;
+  poll_id : bytes;
+  response : nat
 }
 
 entry respond(hash : bytes, choice_id : nat) {
@@ -42,6 +56,7 @@ entry respond(hash : bytes, choice_id : nat) {
     poll.update(hash, {
       responses += [(choice_id, selection_count + 1)]
     });
+    emit<Response>({ caller; hash; choice_id })
   }
 }
 

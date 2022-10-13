@@ -3,9 +3,11 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { AddPoll } from './components/AddPoll';
+import { EventAlert } from './components/EventAlert';
 import { PickPoll } from './components/PickPoll';
 import { RespondPoll } from './components/RespondPoll';
 import { TopBar } from './components/TopBar'
+import { AlertsProvider } from './store/Alerts';
 import { StateProvider, UIState, useAppState } from './store/AppState';
 import { BeaconWalletProvider } from './store/BeaconWallet'
 import { EventsProvider } from './store/Events';
@@ -39,14 +41,17 @@ function DApp() {
           <PollContractProvider>
             <StateProvider>
               <PollDataProvider>
-                <EventsProvider>
-                  <Paper elevation={0}>
-                    <div style={{ height: '100vh', overflow: 'auto' }}>
-                      <TopBar></TopBar>
-                      <MainPanel />
-                    </div>
-                  </Paper>
-                </EventsProvider>
+                <AlertsProvider>
+                  <EventsProvider>
+                    <Paper elevation={0}>
+                      <div style={{ height: '100vh', overflow: 'auto' }}>
+                        <TopBar></TopBar>
+                        <MainPanel />
+                        <EventAlert />
+                      </div>
+                    </Paper>
+                  </EventsProvider>
+                </AlertsProvider>
               </PollDataProvider>
             </StateProvider>
           </PollContractProvider>

@@ -3,23 +3,29 @@ import { run_listener } from "@completium/event-listener";
 import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
 
+import { NewPoll, Response } from '../bindings/poll'
+import { useAlertUtils } from "./Alerts";
+import { usePollContract } from "./PollContract";
 import { useEndpoint } from "./Settings";
 
-export const eventMockup : EventData = {
-  block : "BL1iKL7XjsMNREMYerhAkC9C8hdnBYrq4mF72c9PkyBk3cLQFQJ",
-  op : "onna7P1tgB8UYDyDZGn8xACiNoEbCotQ1CNGtL4tdhXrnGSQ38d",
-  source : "KT19EAMugKU416cbA9jL1XcukWArfpv4dLYu",
-  time : (new Date()).toISOString(),
-  evtype : 'SwitchOn'
+const make_response_msg = (r : Response) : string => {
+  return `${r.responder_addr} submitted new opinion!`
+}
+
+const make_new_poll_msg = (np : NewPoll) : string => {
+  return `${np.creator} added new poll!`
 }
 
 function useEventsState() {
   const [events, setEvents] = useState<Array<EventData>>([]);
   const [nbNewEvents, setNbEvents] = useState(0);
   const endpoint = useEndpoint()
+  const contract = usePollContract()
+  const setAlertMsg = useAlertUtils().setAlertMsg
+  const setAlerOpen = useAlertUtils().setAlertOpen
   const openEvents = useCallback(() => setNbEvents(prev => 0), [])
   const addEvent = useCallback((e : EventData) => {
-      setEvents(prev => prev.concat([e]))
+      setEvents(prev => [e].concat(prev))
       setNbEvents(prev => prev + 1)
   }, [])
   const clearEvents = useCallback(() => {
@@ -29,6 +35,16 @@ function useEventsState() {
   useEffect(() => {
     const startListener = async () => {
       console.log("running event listener")
+      contract.register_Response((e : Response, d ?: EventData) => {
+        setAlertMsg(make_response_msg(e))
+        setAlerOpen(true)
+        if (d) addEvent(d)
+      })
+      contract.register_NewPoll((np : NewPoll, d ?: EventData) => {
+        setAlertMsg(make_new_poll_msg(np))
+        setAlerOpen(true)
+        if (d) addEvent(d)
+      })
       await run_listener({
         endpoint: endpoint,
         verbose: true,

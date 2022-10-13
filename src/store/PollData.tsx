@@ -1,14 +1,13 @@
+import { Nat } from '@completium/archetype-ts-types';
+import constate from 'constate';
 import { useEffect, useState } from 'react';
 
-import constate from 'constate';
-
-import { useIPFSBrowser } from './Settings';
 import { usePollContract } from './PollContract';
-import { Nat } from '@completium/archetype-ts-types';
+import { useIPFSBrowser } from './Settings';
 
-// QmZ8GxAwPvVDEtGxyUmfbB1dtmrdDR6tmMv9HUATaippqU
-// QmbceSQoFzPYAUNnVfmc4juYDm4C4ZN3HrdJu3VfuxNGVR
-// QmdmFzdsfiAoTF3DaFBuNS6BGYye8q5nZCugrbsf9G3NgJ
+// Food    : QmZ8GxAwPvVDEtGxyUmfbB1dtmrdDR6tmMv9HUATaippqU
+// Dancer  : QmbceSQoFzPYAUNnVfmc4juYDm4C4ZN3HrdJu3VfuxNGVR
+// Squares : QmdmFzdsfiAoTF3DaFBuNS6BGYye8q5nZCugrbsf9G3NgJ
 
 export interface Poll {
   id : string,
@@ -33,7 +32,6 @@ export const [
     const loadData = async () => {
       const polls = new Array<Poll>()
       const poll_data = await contract.get_poll()
-      console.log(poll_data)
       for(let i=0; i < poll_data.length; i++) {
         let hash = poll_data[i][0].hex_decode()
         let url = ipfs + hash

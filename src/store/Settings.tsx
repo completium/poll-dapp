@@ -1,7 +1,6 @@
 import { NetworkType } from "@airgap/beacon-sdk";
-import { useState } from 'react';
-
 import constate from "constate";
+import { useState } from 'react';
 
 export enum Theme {
   Light,
@@ -30,7 +29,7 @@ export const [
     const [settingState, setState] = useState({
       app_name        : 'Poll DAPP',
       endpoint        : 'https://kathmandunet.ecadinfra.com',
-      poll_contract   : 'KT1V88jY1kfgmHzErgY36xX3qwJNGUxsZqzq',
+      poll_contract   : 'KT1W2bskp2pDHusTTkPhfLAvTHJbeSTWEGom',
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
       network         :  NetworkType.KATHMANDUNET,
       theme           :  Theme.Dark,

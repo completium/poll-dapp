@@ -1,5 +1,31 @@
-import * as ex from "./dapp-ts";
 import * as att from "@completium/archetype-ts-types";
+import * as ex from "@completium/dapp-ts";
+import * as el from "@completium/event-listener";
+
+export class NewPoll implements att.ArchetypeType {
+    constructor(public creator: att.Address, public poll_id: att.Bytes) { }
+    toString(): string {
+        return JSON.stringify(this, null, 2);
+    }
+    to_mich(): att.Micheline {
+        return att.pair_to_mich([this.creator.to_mich(), this.poll_id.to_mich()]);
+    }
+    equals(v: NewPoll): boolean {
+        return (this.creator.equals(v.creator) && this.creator.equals(v.creator) && this.poll_id.equals(v.poll_id));
+    }
+}
+export class Response implements att.ArchetypeType {
+    constructor(public responder_addr: att.Address, public poll_id: att.Bytes, public response: att.Nat) { }
+    toString(): string {
+        return JSON.stringify(this, null, 2);
+    }
+    to_mich(): att.Micheline {
+        return att.pair_to_mich([this.responder_addr.to_mich(), att.pair_to_mich([this.poll_id.to_mich(), this.response.to_mich()])]);
+    }
+    equals(v: Response): boolean {
+        return (this.responder_addr.equals(v.responder_addr) && this.responder_addr.equals(v.responder_addr) && this.poll_id.equals(v.poll_id) && this.response.equals(v.response));
+    }
+}
 export enum poll_action_types {
     Add = "Add",
     Remove = "Remove"
@@ -65,12 +91,6 @@ export class responder_value implements att.ArchetypeType {
 }
 export const poll_value_mich_type: att.MichelineType = att.pair_to_mich_type("map", att.prim_annot_to_mich_type("nat", []), att.prim_annot_to_mich_type("nat", []));
 export const responder_value_mich_type: att.MichelineType = att.prim_annot_to_mich_type("unit", []);
-export const mich_to_poll_value = (v: att.Micheline, collapsed: boolean = false): poll_value => {
-    return att.mich_to_map(v, (x, y) => [att.mich_to_nat(x), att.mich_to_nat(y)]);
-};
-export const mich_to_responder_value = (v: att.Micheline, collapsed: boolean = false): responder_value => {
-    throw new Error("mich_to_responder_value should not be called");
-};
 export type poll_container = Array<[
     poll_key,
     poll_value
@@ -113,12 +133,12 @@ export class Poll {
         }
         throw new Error("Contract not initialised");
     }
-    //async deploy(owner: att.Address, params: Partial<ex.Parameters>) {
-    //    const address = await ex.deploy("./contracts/poll.arl", {
-    //        owner: owner.to_mich()
-    //    }, params);
-    //    this.address = address;
-    //}
+    async deploy(owner: att.Address, params: Partial<ex.Parameters>) {
+        const address = await ex.deploy("./contracts/poll.arl", {
+            owner: owner.to_mich()
+        }, params);
+        this.address = address;
+    }
     async manage_poll(a: poll_action, params: Partial<ex.Parameters>): Promise<any> {
         if (this.address != undefined) {
             return await ex.call(this.address, "manage_poll", manage_poll_arg_to_mich(a), params);
@@ -194,7 +214,7 @@ export class Poll {
             const storage = await ex.get_storage(this.address);
             const data = await ex.get_big_map_value(BigInt(storage.responder), key.to_mich(), responder_key_mich_type, responder_value_mich_type), collapsed = true;
             if (data != undefined) {
-                return mich_to_responder_value(data, true);
+                return new responder_value();
             }
             else {
                 return undefined;
@@ -212,6 +232,26 @@ export class Poll {
             else {
                 return false;
             }
+        }
+        throw new Error("Contract not initialised");
+    }
+    register_NewPoll(ep: el.EventProcessor<NewPoll>) {
+        if (this.address != undefined) {
+            el.registerEvent({ source: this.address, filter: tag => { return tag == "NewPoll"; }, process: (raw: any, data: el.EventData | undefined) => {
+                    const event = (x => { return new NewPoll((x => { return new att.Address(x); })(x.creator), (x => { return new att.Bytes(x); })(x.poll_id)); })(raw);
+                    ep(event, data);
+                } });
+            return
+        }
+        throw new Error("Contract not initialised");
+    }
+    register_Response(ep: el.EventProcessor<Response>) {
+        if (this.address != undefined) {
+            el.registerEvent({ source: this.address, filter: tag => { return tag == "Response"; }, process: (raw: any, data: el.EventData | undefined) => {
+                    const event = (x => { return new Response((x => { return new att.Address(x); })(x.responder_addr), (x => { return new att.Bytes(x); })(x.poll_id), (x => { return new att.Nat(x); })(x.response)); })(raw);
+                    ep(event, data);
+                } });
+            return
         }
         throw new Error("Contract not initialised");
     }

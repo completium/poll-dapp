@@ -18,10 +18,10 @@ export const PickPoll = () => {
           Give your opinion!
         </Typography>
       </Grid2>
-      <Grid2 xs={12}>
+      <Grid2 item xs={12}>
         <Grid2 container justifyContent="center" alignItems="center" spacing={4}>
           { polls.map((s,i) => {
-              return <Grid2 key={"survey_"+i} md={4} sm={6} xs={12}>
+              return <Grid2 item key={"survey_"+i} md={4} sm={6} xs={12}>
                 <Grid2 container justifyContent='center'>
                   <PollCard data={s}/>
                 </Grid2>
