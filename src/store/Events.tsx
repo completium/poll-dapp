@@ -45,7 +45,7 @@ function useEventsState() {
         setAlertMsg(make_response_msg(e))
         setAlerOpen(true)
         const responses = await contract.view_get_responses(e.poll_id, {})
-        setResponses(e.poll_id.hex_decode(), responses)
+        setResponses(e.poll_id.to_big_number().toNumber(), responses)
         if (d) addEvent(d)
       })
       contract.register_NewPoll((np : NewPoll, d ?: EventData) => {

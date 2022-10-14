@@ -104,7 +104,7 @@ const PollPreview = (arg : { uip : UIPoll | undefined }) => {
       </Grid2>
   } else {
     const setChoice : React.Dispatch<React.SetStateAction<number | undefined>> = n => {}
-    const poll : Poll = { ...arg.uip, id : "", responses : [] }
+    const poll : Poll = { ...arg.uip, id : 0, responses : [] }
     return <Box sx={{ p: 2, border: '1px dashed grey' }}>
         <PollPanel
         preview={true}

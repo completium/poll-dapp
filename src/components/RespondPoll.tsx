@@ -16,7 +16,7 @@ import { useEndpoint, useNetwork } from "../store/Settings";
 import { useTezos } from "../store/Taquito";
 import { PollPanel } from "./PollPanel";
 
-const getPoll = (polls : Array<Poll>, id : string) : Poll => {
+const getPoll = (polls : Array<Poll>, id : number) : Poll => {
   const poll = polls.find(x => x.id === id)
   if (poll !== undefined) {
     return poll
@@ -48,10 +48,10 @@ export const RespondPoll = () => {
         if (wallet_address === undefined) {
           await connect(tezos, network, endpoint)
         }
-        await contract.respond(Bytes.hex_encode(selected), new Nat(choice), {})
+        await contract.respond(new Nat(selected), new Nat(choice), {})
         setLoading(false)
         setChoice(undefined)
-        const responses = await contract.view_get_responses(Bytes.hex_encode(poll.id), {})
+        const responses = await contract.view_get_responses(new Nat(poll.id), {})
         setResponses(poll.id, responses)
         setBar(true)
       }
@@ -63,9 +63,9 @@ export const RespondPoll = () => {
   useEffect(() => {
     if (wallet_address) {
       const load_responses = async () => {
-        const responded = await contract.has_responder_value(new responder_key(Bytes.hex_encode(poll.id), new Address(wallet_address)))
+        const responded = await contract.view_already_responded(new Nat(poll.id), { as : new Address(wallet_address) })
         if (responded) {
-          const responses = await contract.view_get_responses(Bytes.hex_encode(poll.id), {})
+          const responses = await contract.view_get_responses(new Nat(poll.id), {})
           setResponses(poll.id, responses)
           setBar(true)
         }

@@ -10,7 +10,7 @@ import { useIPFSBrowser } from './Settings';
 // Squares : QmdmFzdsfiAoTF3DaFBuNS6BGYye8q5nZCugrbsf9G3NgJ
 
 export interface Poll {
-  id : string,
+  id : number,
   utterance : string,
   img : string,
   choices : Array<string>
@@ -38,13 +38,13 @@ export const [
       const polls = new Array<Poll>()
       const poll_data = await contract.get_poll()
       for(let i=0; i < poll_data.length; i++) {
-        let hash = poll_data[i][0].hex_decode()
+        let hash = poll_data[i][1].ipfs_hash.hex_decode()
         let url = ipfs + hash
         const res = await fetch(url)
-        const ui  = await res.json()
+        const ui : UIPoll = await res.json()  // typing is important here!!
         polls.push({
           ...ui,
-          id : hash,
+          id : poll_data[i][0].to_big_number().toNumber(),
           responses : nat_responses_to_number(poll_data[i][1].responses),
           creation : poll_data[i][1].creation
         })
@@ -56,7 +56,7 @@ export const [
       // load polls' ui data
       loadData()
     }, [])
-    const setResponses = (id : string, r : Array<[ Nat, Nat ]>) => {
+    const setResponses = (id : number, r : Array<[ Nat, Nat ]>) => {
       setPolls(ps => {
         return ps.map(p => {
           if (p.id === id) {

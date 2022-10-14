@@ -72,7 +72,7 @@ entry set_metadata(k: string, d : option<bytes>) {
 
 event Response {
   responder_addr : address;
-  poll_id : bytes;
+  poll_id : nat;
   response : nat
 }
 
@@ -88,7 +88,10 @@ event ApprovePoll {
 
 // Storage ----------------------------------------------------------
 
+variable polls_counter : nat = 0
+
 asset poll {
+  poll_pk : nat;
   ipfs_hash : bytes;
   responses : map<nat, nat> = [];
   creation : date = now
@@ -99,9 +102,9 @@ asset poll_to_approve to big_map {
   poll_creator : address = caller
 }
 
-asset responder identified by poll_hash addr to big_map {
-  poll_hash : bytes;
-  addr : address;
+asset responder to big_map {
+  res_addr : address;
+  polls : set<nat> = [];
 }
 
 // Entries ----------------------------------------------------------
@@ -122,7 +125,8 @@ entry approve(h : bytes) {
     creator_ ?is poll_to_approve[h]?.poll_creator otherwise POLL_NOT_FOUND
   }
   effect {
-    poll.add({ ipfs_hash = h });
+    poll.add({ poll_pk = polls_counter; ipfs_hash = h });
+    polls_counter += 1;
     poll_to_approve.remove(h);
     emit<ApprovePoll>({ creator_; h })
   }
@@ -135,34 +139,39 @@ entry disapprove(h : bytes) {
   }
 }
 
-entry remove(h : bytes) {
+entry remove(pk : nat) {
   called by owner
   effect {
-    poll.remove(h)
+    poll.remove(pk)
   }
 }
 
-entry respond(hash : bytes, choice_id : nat) {
+entry respond(pk : nat, choice_id : nat) {
   constant {
-    r_key is (hash, caller);
-    selection_count is poll[hash] ? (the.responses[choice_id] ? the : 0) : 0;
+    selection_count is poll[pk] ? (the.responses[choice_id] ? the : 0) : 0;
   }
   require {
     r2 : is_not_paused();
-    r3 : poll.contains(hash)           otherwise POLL_NOT_FOUND;
-    r4 : not responder.contains(r_key) otherwise CANNOT_RESPOND_TWICE
+    r3 : poll.contains(pk)     otherwise POLL_NOT_FOUND;
+  }
+  fail if {
+    f1 : responder[caller] ? the.polls.contains(pk) : false with CANNOT_RESPOND_TWICE
   }
   effect {
-    responder.add_update(r_key, {});
-    poll.update(hash, {
+    responder.add_update(caller, { polls += [pk] } );
+    poll.update(pk, {
       responses += [(choice_id, selection_count + 1)]
     });
-    emit<Response>({ caller; hash; choice_id })
+    emit<Response>({ caller; pk; choice_id })
   }
 }
 
 // Views -----------------------------------------------------------
 
-view get_responses(hash : bytes) : map<nat, nat> {
-  return poll[hash].responses
+view get_responses(pk : nat) : map<nat, nat> {
+  return poll[pk].responses
+}
+
+view already_responded(pk : nat) : bool {
+  return (responder[source] ? the.polls.contains(pk) : false)
 }
