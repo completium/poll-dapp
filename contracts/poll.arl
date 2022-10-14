@@ -1,12 +1,101 @@
 archetype poll(owner : address)
+with metadata ""
+
+// Errors -----------------------------------------------------------
 
 constant CANNOT_RESPOND_TWICE : string = "CANNOT_RESPOND_TWICE"
 constant NON_EMPTY_SELECTIONS : string = "NON_EMPTY_SELECTIONS"
 constant POLL_NOT_FOUND       : string = "POLL_NOT_FOUND"
 
+/* OWNERSHIP TRANSFER ------------------------------------------------------- */
+
+variable owner_candidate : option<address> = none
+
+entry declare_ownership(candidate : address) {
+  called by owner
+  effect {
+    owner_candidate := some(candidate);
+  }
+}
+
+entry claim_ownership() {
+  require {
+    ownership_r1: (owner_candidate ? the = caller : false) otherwise "INVALID_CALLER"
+  }
+  effect {
+    owner := caller;
+    owner_candidate := none
+  }
+}
+
+/* PAUSABLE ---------------------------------------------------------------- */
+
+variable paused : bool = false
+
+function is_not_paused() : bool {
+  do_fail_if(paused, "CONTRACT_PAUSED");
+  return true
+}
+
+entry pause() {
+  called by owner
+  require {
+    pausable_r1: is_not_paused()
+  }
+  effect {
+    paused := true
+  }
+}
+
+entry unpause() {
+  called by owner
+  require {
+    pausable_r2: paused otherwise "CONTRACT_NOT_PAUSED"
+  }
+  effect {
+    paused := false
+  }
+}
+
+/* METADATA ---------------------------------------------------------------- */
+
+entry set_metadata(k: string, d : option<bytes>) {
+  called by owner
+  require { md_r1 : is_not_paused() }
+  effect {
+    metadata.update(k, d)
+  }
+}
+
+// Events -----------------------------------------------------------
+
+event Response {
+  responder_addr : address;
+  poll_id : bytes;
+  response : nat
+}
+
+event NewPoll {
+  creator : address;
+  poll_id : bytes
+}
+
+event ApprovePoll {
+  creator : address;
+  poll_id : bytes
+}
+
+// Storage ----------------------------------------------------------
+
 asset poll {
   ipfs_hash : bytes;
   responses : map<nat, nat> = [];
+  creation : date = now
+}
+
+asset poll_to_approve to big_map {
+  ipfs_hash_to_approve : bytes;
+  poll_creator : address = caller
 }
 
 asset responder identified by poll_hash addr to big_map {
@@ -14,32 +103,42 @@ asset responder identified by poll_hash addr to big_map {
   addr : address;
 }
 
-enum poll_action =
-| Add<bytes>
-| Remove<bytes>
+// Entries ----------------------------------------------------------
 
-event NewPoll {
-  creator : address;
-  poll_id : bytes
+entry add_poll(h : bytes) {
+  require {
+    r1 : is_not_paused()
+  }
+  effect {
+    poll_to_approve.add({ ipfs_hash_to_approve = h });
+    emit<NewPoll>({ caller; h })
+  }
 }
 
-entry manage_poll(a : poll_action) {
-  match a with
-  | Add(h) -> begin
-      poll.add({ ipfs_hash = h });
-      emit<NewPoll>({ caller; h })
-    end
-  | Remove(h) -> begin
-      do_require(caller = owner, "INVALID_CALLER");
-      poll.remove(h)
-    end
-  end
+entry approve(h : bytes) {
+  called by owner
+  constant {
+    creator_ ?is poll_to_approve[h]?.poll_creator otherwise POLL_NOT_FOUND
+  }
+  effect {
+    poll.add({ ipfs_hash = h });
+    poll_to_approve.remove(h);
+    emit<ApprovePoll>({ creator_; h })
+  }
 }
 
-event Response {
-  responder_addr : address;
-  poll_id : bytes;
-  response : nat
+entry disapprove(h : bytes) {
+  called by owner
+  effect {
+    poll_to_approve.remove(h)
+  }
+}
+
+entry remove(h : bytes) {
+  called by owner
+  effect {
+    poll.remove(h)
+  }
 }
 
 entry respond(hash : bytes, choice_id : nat) {
@@ -48,8 +147,9 @@ entry respond(hash : bytes, choice_id : nat) {
     selection_count is poll[hash] ? (the.responses[choice_id] ? the : 0) : 0;
   }
   require {
-    r1 : poll.contains(hash)           otherwise POLL_NOT_FOUND;
-    r2 : not responder.contains(r_key) otherwise CANNOT_RESPOND_TWICE
+    r2 : is_not_paused();
+    r3 : poll.contains(hash)           otherwise POLL_NOT_FOUND;
+    r4 : not responder.contains(r_key) otherwise CANNOT_RESPOND_TWICE
   }
   effect {
     responder.add_update(r_key, {});
@@ -59,6 +159,8 @@ entry respond(hash : bytes, choice_id : nat) {
     emit<Response>({ caller; hash; choice_id })
   }
 }
+
+// Views -----------------------------------------------------------
 
 view get_responses(hash : bytes) : map<nat, nat> {
   return poll[hash].responses

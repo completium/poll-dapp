@@ -29,7 +29,7 @@ export const [
     const [settingState, setState] = useState({
       app_name        : 'Poll DAPP',
       endpoint        : 'https://ghostnet.ecadinfra.com',
-      poll_contract   : 'KT1Ac8DrmUihi2YxzSfKg5qERbYpB9msSeWA',
+      poll_contract   : 'KT1BmsqKbq5iZRPfGNaVAJpXZADADSHP5AMV',
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
       network         :  NetworkType.GHOSTNET,
       theme           :  Theme.Dark,

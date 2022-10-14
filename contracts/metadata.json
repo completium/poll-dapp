@@ -1,0 +1,9 @@
+{
+  "name": "Poll Dapp",
+  "description": "An example of Dapp built with Archetype & Completium",
+  "version": "1.0",
+  "license": { "name": "MIT" },
+  "authors": ["Completium team <contact@completium.com>"],
+  "homepage": "https://completium.github.io/poll-dapp/",
+  "interfaces": ["TZIP-016"]
+}

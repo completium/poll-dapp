@@ -1,7 +1,6 @@
 import { Nat } from '@completium/archetype-ts-types';
 import constate from 'constate';
 import { useEffect, useState } from 'react';
-import { poll_container } from '../bindings/poll';
 
 import { usePollContract } from './PollContract';
 import { useIPFSBrowser } from './Settings';
@@ -15,7 +14,12 @@ export interface Poll {
   utterance : string,
   img : string,
   choices : Array<string>
+  creation : Date,
   responses : Array<[ number, number]>
+}
+
+const nat_responses_to_number = (r : Array<[Nat, Nat]>) : Array<[ number, number]> => {
+  return r.map(x => [ x[0].to_big_number().toNumber(), x[1].to_big_number().toNumber() ])
 }
 
 export type UIPoll = Omit<Poll, "id" | "responses">
@@ -41,10 +45,11 @@ export const [
         polls.push({
           ...ui,
           id : hash,
-          responses : poll_data[i][1].map(x => [ x[0].to_big_number().toNumber(), x[1].to_big_number().toNumber() ])
+          responses : nat_responses_to_number(poll_data[i][1].responses),
+          creation : poll_data[i][1].creation
         })
       }
-      setPolls(polls)
+      setPolls(polls.sort((p1,p2) => p1.creation.getTime() - p2.creation.getTime()))
     }
 
     useEffect(() => {
@@ -55,7 +60,7 @@ export const [
       setPolls(ps => {
         return ps.map(p => {
           if (p.id === id) {
-            return { ...p, responses : r.map(x => [ x[0].to_big_number().toNumber(), x[1].to_big_number().toNumber() ]) }
+            return { ...p, responses : nat_responses_to_number(r) }
           } else return p
         })
       })

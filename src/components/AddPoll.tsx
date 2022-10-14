@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
-import { Add } from '../bindings/poll';
 import { useAppState } from '../store/AppState';
 import { useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
 import { usePollContract } from '../store/PollContract';
@@ -39,7 +38,7 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
       if (wallet_address === undefined) {
         await connect(tezos, network, endpoint)
       }
-      await contract.manage_poll(new Add(Bytes.hex_encode(uri)), {})
+      await contract.add_poll(Bytes.hex_encode(uri), {})
       await loadData()
       setLoading(false)
       setIsValidURI(false)

@@ -1,9 +1,10 @@
 import { EventData } from "@completium/event-listener"
 import { run_listener } from "@completium/event-listener";
+import { AppBarProps } from "@mui/material";
 import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
 
-import { NewPoll, Response } from '../bindings/poll'
+import { ApprovePoll, NewPoll, Response } from '../bindings/poll'
 import { useAlertUtils } from "./Alerts";
 import { usePollContract } from "./PollContract";
 import { usePollUtils } from "./PollData";
@@ -15,6 +16,10 @@ const make_response_msg = (r : Response) : string => {
 
 const make_new_poll_msg = (np : NewPoll) : string => {
   return `${np.creator} added new poll!`
+}
+
+const make_poll_confirmed_msg = (np : ApprovePoll) : string => {
+  return `owner approved poll ${np.poll_id.hex_decode()}`
 }
 
 function useEventsState() {
@@ -45,6 +50,11 @@ function useEventsState() {
       })
       contract.register_NewPoll((np : NewPoll, d ?: EventData) => {
         setAlertMsg(make_new_poll_msg(np))
+        setAlerOpen(true)
+        if (d) addEvent(d)
+      })
+      contract.register_ApprovePoll((ap : ApprovePoll, d ?: EventData) => {
+        setAlertMsg(make_poll_confirmed_msg(ap))
         setAlerOpen(true)
         if (d) addEvent(d)
       })
