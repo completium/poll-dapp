@@ -1,4 +1,4 @@
-import { Address, Bytes, Nat } from "@completium/archetype-ts-types";
+import { Address, Nat } from "@completium/archetype-ts-types";
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -7,13 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from "react";
 
-import { responder_key } from "../bindings/poll";
 import { useAppState } from "../store/AppState"
-import { useWalletAddress, useWalletUtils } from "../store/BeaconWallet";
+import { useWalletAddress, useBeaconUtils } from "../store/Beacon";
 import { usePollContract } from "../store/PollContract";
 import { getPolls, Poll, usePollUtils } from "../store/PollData"
-import { useEndpoint, useNetwork } from "../store/Settings";
-import { useTezos } from "../store/Taquito";
 import { PollPanel } from "./PollPanel";
 
 const getPoll = (polls : Array<Poll>, id : number) : Poll => {
@@ -37,16 +34,14 @@ export const RespondPoll = () => {
   const poll = getPoll(polls, selected)
   const total = poll.responses.reduce((acc, x) => { return acc + x[1] }, 0)
   const wallet_address = useWalletAddress()
-  const connect = useWalletUtils().connect
-  const tezos = useTezos()
-  const network = useNetwork()
-  const endpoint = useEndpoint()
+  const is_connected = useBeaconUtils().is_connected
+  const connect = useBeaconUtils().connect
   const respond = async () => {
     setLoading(true)
     try {
       if (choice !== undefined) {
-        if (wallet_address === undefined) {
-          await connect(tezos, network, endpoint)
+        if (!is_connected()) {
+          await connect()
         }
         await contract.respond(new Nat(selected), new Nat(choice), {})
         setLoading(false)

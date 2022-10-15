@@ -9,12 +9,12 @@ import { RespondPoll } from './components/RespondPoll';
 import { TopBar } from './components/TopBar'
 import { AlertsProvider } from './store/Alerts';
 import { StateProvider, UIState, useAppState } from './store/AppState';
-import { BeaconWalletProvider } from './store/BeaconWallet'
+import { BeaconProvider } from './store/Beacon'
 import { EventsProvider } from './store/Events';
 import { PollContractProvider } from './store/PollContract';
 import { PollDataProvider } from './store/PollData';
 import { SettingsProvider, Theme, useTheme } from './store/Settings';
-import { TezosProvider } from './store/Taquito';
+import { TaquitoProvider } from './store/Taquito';
 
 import './App.css';
 
@@ -36,8 +36,8 @@ function DApp() {
   });
   return (
     <ThemeProvider theme={uiTheme}>
-      <TezosProvider>
-        <BeaconWalletProvider>
+      <TaquitoProvider>
+        <BeaconProvider>
           <PollContractProvider>
             <StateProvider>
               <PollDataProvider>
@@ -55,8 +55,8 @@ function DApp() {
               </PollDataProvider>
             </StateProvider>
           </PollContractProvider>
-        </BeaconWalletProvider>
-      </TezosProvider>
+        </BeaconProvider>
+      </TaquitoProvider>
     </ThemeProvider>
   )
 }

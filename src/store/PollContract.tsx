@@ -4,14 +4,14 @@ import { useState } from 'react';
 
 import { Poll } from '../bindings/poll';
 import { usePollAddress } from './Settings';
-import { useTezos } from './Taquito';
+import { useTezosToolkit } from './Taquito';
 
 export const [
   PollContractProvider,
   usePollContract
 ] = constate(
   () => {
-    const tezos = useTezos()
+    const tezos = useTezosToolkit()
     const address = usePollAddress()
     const [contractState] = useState({
       contract: new Poll(address),

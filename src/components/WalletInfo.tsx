@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from 'react';
 
-import { useBeaconWallet, useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
+import { useWalletName, useWalletAddress, useBeaconUtils } from '../store/Beacon';
 import { useEndpoint, useNetwork } from '../store/Settings';
-import { useTezos } from '../store/Taquito';
+import { useTezosToolkit } from '../store/Taquito';
 
 export const Address = (arg : { address : string | undefined }) => {
   return <Grid2 container spacing={0} alignItems="flex-end">
@@ -31,19 +31,15 @@ export const Address = (arg : { address : string | undefined }) => {
 }
 
 export const WalletInfo = (arg : { open : boolean, anchorEl : HTMLElement | null, handlePopoverClose : () => void }) => {
-  const [wallet, setWallet] = useState("...")
   const [balance, setBalance] = useState("...")
+  const wallet = useWalletName()
   const address = useWalletAddress()
   const endpoint = useEndpoint()
   const network = useNetwork()
-  const beacon = useBeaconWallet()
-  const tezos = useTezos()
-  const disconnect = useWalletUtils().disconnect
+  const ttk = useTezosToolkit()
+  const disconnect = useBeaconUtils().disconnect
   useEffect(() => {
-    beacon?.client.getPeers().then(peers => {
-      setWallet(peers[0].name)
-    })
-    if (address) tezos.tz.getBalance(address).then(b => {
+    if (address) ttk.tz.getBalance(address).then(b => {
       setBalance(""+b.dividedBy(1000000).toNumber()+"ꜩ")
     })
   })

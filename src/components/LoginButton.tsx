@@ -2,9 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import React from 'react';
 
-import { useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
-import { useEndpoint, useNetwork } from '../store/Settings';
-import { useTezos } from '../store/Taquito';
+import { useWalletAddress, useBeaconUtils } from '../store/Beacon';
 import { WalletInfo } from './WalletInfo';
 
 export const LoginButton = () => {
@@ -20,11 +18,8 @@ export const LoginButton = () => {
 
   const open = Boolean(anchorEl);
 
-  const tezos = useTezos()
-  const network = useNetwork()
-  const endpoint = useEndpoint()
   const address = useWalletAddress()
-  const wallet = useWalletUtils()
+  const wallet = useBeaconUtils()
 
   if (address)
     return <div>
@@ -34,7 +29,7 @@ export const LoginButton = () => {
       <WalletInfo open={open} anchorEl={anchorEl} handlePopoverClose={handleClose} />
     </div>
   else
-    return <Button color="inherit" onClick={() => wallet.connect(tezos, network, endpoint)}>
+    return <Button color="inherit" onClick={() => wallet.connect()}>
       Login
     </Button>
 }

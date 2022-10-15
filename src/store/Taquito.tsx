@@ -5,17 +5,16 @@ import constate from 'constate';
 import { useEndpoint } from './Settings';
 
 export const [
-  TezosProvider,
-  useTezos
+  TaquitoProvider,
+  useTezosToolkit
 ] = constate(
   () => {
     const endpoint = useEndpoint()
-    const tezos    = new TezosToolkit(endpoint)
-    const [taquitoState] = useState(() : { tezos : TezosToolkit } => ({
-      tezos: tezos,
+    const [taquito] = useState(() : { ttk : TezosToolkit } => ({
+      ttk: new TezosToolkit(endpoint),
     }));
-    return taquitoState;
+    return taquito;
   },
-  (v) => v.tezos,
+  (v) => v.ttk,
 );
 

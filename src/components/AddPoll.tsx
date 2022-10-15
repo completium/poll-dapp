@@ -10,12 +10,11 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
 import { useAppState } from '../store/AppState';
-import { useWalletAddress, useWalletUtils } from '../store/BeaconWallet';
+import { useBeaconUtils } from '../store/Beacon';
 import { usePollContract } from '../store/PollContract';
 import { UIPoll, usePollUtils } from '../store/PollData';
 import { Poll } from '../store/PollData';
-import { useEndpoint, useIPFSBrowser, useNetwork } from '../store/Settings';
-import { useTezos } from '../store/Taquito';
+import { useIPFSBrowser } from '../store/Settings';
 import { PollPanel } from './PollPanel';
 
 const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll | undefined>> }) => {
@@ -27,16 +26,13 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
   const contract = usePollContract()
   const loadData = usePollUtils().loadData
   const setPick = useAppState().setPick
-  const wallet_address = useWalletAddress()
-  const connect = useWalletUtils().connect
-  const tezos = useTezos()
-  const network = useNetwork()
-  const endpoint = useEndpoint()
+  const is_connected = useBeaconUtils().is_connected
+  const connect = useBeaconUtils().connect
   const addPoll = async () => {
     setLoading(true)
     try {
-      if (wallet_address === undefined) {
-        await connect(tezos, network, endpoint)
+      if (!is_connected()) {
+        await connect()
       }
       await contract.add_poll(Bytes.hex_encode(uri), {})
       await loadData()
