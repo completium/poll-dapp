@@ -5,8 +5,8 @@
   "private": true,
   "dependencies": {
     "@airgap/beacon-sdk": "^3.2.0",
-    "@completium/archetype-ts-types": "^0.0.6",
-    "@completium/dapp-ts": "^0.0.4",
+    "@completium/archetype-ts-types": "^0.0.8",
+    "@completium/dapp-ts": "^0.0.7",
     "@completium/event-listener": "^0.0.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -35,7 +35,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "gen-binding": "completium-cli generate binding-dapp-ts _ --input-path ./contracts/contracts --output-path ./src/bindings"
   },
   "eslintConfig": {
     "extends": [
