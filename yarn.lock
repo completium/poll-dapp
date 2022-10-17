@@ -1192,19 +1192,19 @@
   "resolved" "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   "version" "0.2.3"
 
-"@completium/archetype-ts-types@^0.0.6":
-  "integrity" "sha512-anVdthmkpE2+kbwMrB0ASOjrNI3lWaFWzv7ZthJN7lREVfro/Ww/yHpY9LOnRkgDTkZa58fqJnW+2qtIan4eHQ=="
-  "resolved" "https://registry.npmjs.org/@completium/archetype-ts-types/-/archetype-ts-types-0.0.6.tgz"
-  "version" "0.0.6"
+"@completium/archetype-ts-types@^0.0.8":
+  "integrity" "sha512-q6G2HlQAJpbQji7KQYXaGjFrJC/O/UXsOn1K2ReYuG8ozXf5ovCPn1svt0KzYblIBIJJwMY0N9y//fIt8mhdbg=="
+  "resolved" "https://registry.npmjs.org/@completium/archetype-ts-types/-/archetype-ts-types-0.0.8.tgz"
+  "version" "0.0.8"
   dependencies:
     "bignumber.js" "^9.0.2"
 
-"@completium/dapp-ts@^0.0.4":
-  "integrity" "sha512-FqPzQ4ATQjLC8/TEB462Pdf7DABVx7KP9fTnsYOKOHQIt60YJVoqWd2F369V720CGLad6S1C/LRhENvopuZe0Q=="
-  "resolved" "https://registry.npmjs.org/@completium/dapp-ts/-/dapp-ts-0.0.4.tgz"
-  "version" "0.0.4"
+"@completium/dapp-ts@^0.0.7":
+  "integrity" "sha512-EcGW/SjEoHbvyWQNOnx/Wfqm9TOXBDrF1+ofxSsgihWP5i6GO/WzEtKQnk59/sMgBBK6nOMta7A6lwbxCOVn4A=="
+  "resolved" "https://registry.npmjs.org/@completium/dapp-ts/-/dapp-ts-0.0.7.tgz"
+  "version" "0.0.7"
   dependencies:
-    "@completium/archetype-ts-types" "^0.0.6"
+    "@completium/archetype-ts-types" "^0.0.8"
     "@taquito/michel-codec" "^14.0.0"
     "@taquito/michelson-encoder" "^14.0.0"
     "@taquito/taquito" "^14.0.0"
@@ -5492,11 +5492,6 @@
   "integrity" "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw=="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
-
-"fsevents@^2.3.2", "fsevents@~2.3.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="

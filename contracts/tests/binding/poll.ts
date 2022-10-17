@@ -1,4 +1,4 @@
-import * as ex from "@completium/dapp-ts";
+import * as ex from "@completium/experiment-ts";
 import * as att from "@completium/archetype-ts-types";
 import * as el from "@completium/event-listener";
 export class Response implements att.ArchetypeType {
