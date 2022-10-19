@@ -23,7 +23,7 @@ export const [
   useNetwork,
   useIPFSBrowser,
   useGitRepo,
-  useSettingsSetters,
+  useSwitchTheme,
 ] = constate(
   () => {
     const [settingState, setState] = useState({
@@ -45,5 +45,5 @@ export const [
   v => v.settingState.network,
   v => v.settingState.ipfs_browser,
   v => v.settingState.git_repo,
-  v => v.setters
+  v => v.setters.switchTheme
 );

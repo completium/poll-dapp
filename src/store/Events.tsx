@@ -1,13 +1,12 @@
 import { EventData } from "@completium/event-listener"
 import { run_listener } from "@completium/event-listener";
-import { AppBarProps } from "@mui/material";
 import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
 
 import { ApprovePoll, NewPoll, Response } from '../bindings/poll'
-import { useAlertUtils } from "./Alerts";
+import { useAlertSetMsg, useAlertSetOpen } from "./Alerts";
 import { usePollContract } from "./PollContract";
-import { usePollUtils } from "./PollData";
+import { useLoadResponses } from "./Polls";
 import { useEndpoint } from "./Settings";
 
 const make_response_msg = (r : Response) : string => {
@@ -27,10 +26,10 @@ function useEventsState() {
   const [nbNewEvents, setNbEvents] = useState(0);
   const endpoint = useEndpoint()
   const contract = usePollContract()
-  const setAlertMsg = useAlertUtils().setAlertMsg
-  const setAlerOpen = useAlertUtils().setAlertOpen
+  const setAlertMsg = useAlertSetMsg()
+  const setAlerOpen = useAlertSetOpen()
   const openEvents = useCallback(() => setNbEvents(prev => 0), [])
-  const setResponses = usePollUtils().setResponses
+  const loadResponses = useLoadResponses()
   const addEvent = useCallback((e : EventData) => {
       setEvents(prev => [e].concat(prev))
       setNbEvents(prev => prev + 1)
@@ -44,8 +43,7 @@ function useEventsState() {
       contract.register_Response(async (e : Response, d ?: EventData) => {
         setAlertMsg(make_response_msg(e))
         setAlerOpen(true)
-        const responses = await contract.view_get_responses(e.poll_id, {})
-        setResponses(e.poll_id.to_big_number().toNumber(), responses)
+        await loadResponses(e.poll_id.to_big_number().toNumber())
         if (d) addEvent(d)
       })
       contract.register_NewPoll((np : NewPoll, d ?: EventData) => {
@@ -69,11 +67,18 @@ function useEventsState() {
   return { events, nbNewEvents, openEvents, addEvent, clearEvents };
 }
 
-export const [EventsProvider, useEvents, useNbNewEvents, useOpenEvents, useAddEvent, useClearEvents] = constate(
+export const [
+  EventsProvider,
+  useEvents,
+  useNbNewEvents,
+  useOpenEvents,
+  useAddEvent,
+  useClearEvents
+] = constate(
   useEventsState,
   value => value.events,
   value => value.nbNewEvents,
   value => value.openEvents,
-  value => value.addEvent, // becomes useSwitchOn
-  value => value.clearEvents, // becomes useSwitchOff
+  value => value.addEvent,
+  value => value.clearEvents,
 );

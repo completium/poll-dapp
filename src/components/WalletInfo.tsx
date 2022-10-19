@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from 'react';
 
-import { useWalletName, useWalletAddress, useBeaconUtils } from '../store/Beacon';
+import { useDisconnect, useWalletAddress, useWalletName } from '../store/Beacon';
 import { useEndpoint, useNetwork } from '../store/Settings';
 import { useTezosToolkit } from '../store/Taquito';
 
@@ -37,7 +37,7 @@ export const WalletInfo = (arg : { open : boolean, anchorEl : HTMLElement | null
   const endpoint = useEndpoint()
   const network = useNetwork()
   const ttk = useTezosToolkit()
-  const disconnect = useBeaconUtils().disconnect
+  const disconnect = useDisconnect()
   useEffect(() => {
     if (address) ttk.tz.getBalance(address).then(b => {
       setBalance(""+b.dividedBy(1000000).toNumber()+"ꜩ")

@@ -1,20 +1,24 @@
 import { BeaconWallet } from '@taquito/beacon-wallet';
-import React from 'react';
-import { useTezosToolkit } from "./Taquito";
-import { useAppName, useEndpoint, useNetwork } from "./Settings";
-
 import constate from 'constate';
+import React from 'react';
+
+import { useAppName, useEndpoint, useNetwork } from "./Settings";
+import { useTezosToolkit } from "./Taquito";
 
 export const [
   BeaconProvider,
   useWalletAddress,
   useWalletName,
-  useBeaconUtils,
+  useConnect,
+  useDisconnect,
+  useIsConnected
 ] = constate(
   MakeBeacon,
   (v) => v.beaconState.user_address,
   (v) => v.beaconState.wallet,
-  (v) => v.utils
+  (v) => v.utils.connect,
+  (v) => v.utils.disconnect,
+  (v) => v.utils.is_connected
 );
 
 function MakeBeacon() {

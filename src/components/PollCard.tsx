@@ -4,13 +4,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-import { useAppState } from '../store/AppState';
-import { Poll } from '../store/PollData'
+import { useSetAppPoll } from '../store/AppState';
+import { Poll } from '../store/Polls'
 
 export const PollCard = (arg : { data : Poll }) => {
-  const setRespond = useAppState().setRespond
+  const set_app_poll = useSetAppPoll()
   return (
-    <Card sx={{ m: '18px', maxWidth: 345, cursor : 'pointer' }} onClick={() => setRespond(arg.data.id)}>
+    <Card sx={{ m: '18px', maxWidth: 345, cursor : 'pointer' }} onClick={() => set_app_poll(arg.data.id)}>
       <CardMedia
         component="img"
         height="140"

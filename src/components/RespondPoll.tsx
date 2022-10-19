@@ -7,10 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from "react";
 
-import { useAppState } from "../store/AppState"
-import { useWalletAddress, useBeaconUtils } from "../store/Beacon";
+import { APPPanel, useAppPoll, useSetAppPanel } from "../store/AppState"
+import { useConnect, useIsConnected, useWalletAddress } from "../store/Beacon";
 import { usePollContract } from "../store/PollContract";
-import { getPolls, Poll, usePollUtils } from "../store/PollData"
+import { Poll, useLoadResponses, usePolls } from "../store/Polls"
 import { PollPanel } from "./PollPanel";
 
 const getPoll = (polls : Array<Poll>, id : number) : Poll => {
@@ -25,17 +25,18 @@ export const RespondPoll = () => {
   const [choice, setChoice] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const contract = usePollContract()
-  const polls = getPolls()
-  const selected = useAppState().selected
-  const setPick = useAppState().setPick
-  const setResponses = usePollUtils().setResponses
+  const polls = usePolls()
+  const selected = useAppPoll()
+  const setPanel = useSetAppPanel()
+  const setPick = () => setPanel(APPPanel.PICK)
+  const loadResponses = useLoadResponses()
   if (selected === undefined) throw new Error("PollPanel : 'selected' not defined")
   const [bar, setBar] = useState(false)
   const poll = getPoll(polls, selected)
   const total = poll.responses.reduce((acc, x) => { return acc + x[1] }, 0)
   const wallet_address = useWalletAddress()
-  const is_connected = useBeaconUtils().is_connected
-  const connect = useBeaconUtils().connect
+  const connect =useConnect()
+  const is_connected = useIsConnected()
   const respond = async () => {
     setLoading(true)
     try {
@@ -46,8 +47,7 @@ export const RespondPoll = () => {
         await contract.respond(new Nat(selected), new Nat(choice), {})
         setLoading(false)
         setChoice(undefined)
-        const responses = await contract.view_get_responses(new Nat(poll.id), {})
-        setResponses(poll.id, responses)
+        await loadResponses(poll.id)
         setBar(true)
       }
     } catch(e) {
@@ -60,8 +60,7 @@ export const RespondPoll = () => {
       const load_responses = async () => {
         const responded = await contract.view_already_responded(new Nat(poll.id), { as : new Address(wallet_address) })
         if (responded) {
-          const responses = await contract.view_get_responses(new Nat(poll.id), {})
-          setResponses(poll.id, responses)
+          await loadResponses(poll.id)
           setBar(true)
         }
       }
@@ -69,7 +68,7 @@ export const RespondPoll = () => {
     }
   }, [])
   return <Container>
-    <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={() => setPick()}><CloseIcon fontSize="inherit"/></IconButton>
+    <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={setPick}><CloseIcon fontSize="inherit"/></IconButton>
     <Grid2 container direction="row" justifyContent="center" alignItems="center">
       <PollPanel preview={false} poll={poll} choice={choice} setChoice={setChoice} bar={bar} total={total}/>
       <Grid2 xs={12} sx={{ mt : '18px', mb : '18px' }} container justifyContent='center'>

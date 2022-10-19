@@ -8,22 +8,22 @@ import { PickPoll } from './components/PickPoll';
 import { RespondPoll } from './components/RespondPoll';
 import { TopBar } from './components/TopBar'
 import { AlertsProvider } from './store/Alerts';
-import { StateProvider, UIState, useAppState } from './store/AppState';
+import { StateProvider, APPPanel, useAppPanel } from './store/AppState';
 import { BeaconProvider } from './store/Beacon'
 import { EventsProvider } from './store/Events';
 import { PollContractProvider } from './store/PollContract';
-import { PollDataProvider } from './store/PollData';
+import { PollDataProvider } from './store/Polls';
 import { SettingsProvider, Theme, useTheme } from './store/Settings';
 import { TaquitoProvider } from './store/Taquito';
 
 import './App.css';
 
 function MainPanel () {
-  const state = useAppState()
-  switch (state.ui) {
-    case (UIState.PICK)    : return <PickPoll />
-    case (UIState.ADD)     : return <AddPoll />
-    case (UIState.RESPOND) : return <RespondPoll />
+  const state = useAppPanel()
+  switch (state) {
+    case (APPPanel.PICK)    : return <PickPoll />
+    case (APPPanel.ADD)     : return <AddPoll />
+    case (APPPanel.RESPOND) : return <RespondPoll />
   }
 }
 

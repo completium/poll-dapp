@@ -4,13 +4,14 @@ import Container from '@mui/material/Container';
 import Grid2 from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { useAppState } from '../store/AppState';
-import { getPolls } from '../store/PollData';
+import { APPPanel, useSetAppPanel } from '../store/AppState';
+import { usePolls } from '../store/Polls';
 import { PollCard } from './PollCard';
 
 export const PickPoll = () => {
-  const setAdd = useAppState().setAdd
-  const polls = getPolls()
+  const set_panel = useSetAppPanel()
+  const set_add = () => set_panel(APPPanel.ADD)
+  const polls = usePolls()
   return <Container>
     <Grid2 container direction="row" justifyContent="center" alignItems="center">
       <Grid2>
@@ -35,7 +36,7 @@ export const PickPoll = () => {
           <Typography variant="h5" sx={{ fontFamily : 'Dancing Script' }}>Want a new poll?</Typography>
         </Grid2>
         <Grid2>
-          <Button onClick={setAdd} sx={{ ml: '18px', mt : '4px' }}>add poll</Button>
+          <Button onClick={set_add} sx={{ ml: '18px', mt : '4px' }}>add poll</Button>
         </Grid2>
       </Grid2>
     </Grid2>
