@@ -18,7 +18,7 @@ export interface Poll {
   responses : Array<[ number, number]>
 }
 
-const nat_responses_to_number = (r : Array<[Nat, Nat]>) : Array<[ number, number]> => {
+const nats_to_numbers = (r : Array<[Nat, Nat]>) : Array<[ number, number]> => {
   return r.map(x => [ x[0].to_big_number().toNumber(), x[1].to_big_number().toNumber() ])
 }
 
@@ -46,7 +46,7 @@ export const [
           utterance : ui.utterance,
           img       : ui.img,
           choices   : ui.choices,
-          responses : nat_responses_to_number(poll_value.responses),
+          responses : nats_to_numbers(poll_value.responses),
           creation  : poll_value.creation
         }
       }))
@@ -58,7 +58,7 @@ export const [
       setPolls(ps => {
         return ps.map(p => {
           if (p.id === poll_id) {
-            return { ...p, responses : nat_responses_to_number(responses) }
+            return { ...p, responses : nats_to_numbers(responses) }
           } else return p
         })
       })
