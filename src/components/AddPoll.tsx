@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
-import { useAppState } from '../store/AppState';
-import { useBeaconUtils } from '../store/Beacon';
+import { APPPanel, useAppPanel, useSetAppPanel } from '../store/AppState';
+import { useConnect, useIsConnected } from '../store/Beacon';
 import { usePollContract } from '../store/PollContract';
-import { UIPoll, usePollUtils } from '../store/PollData';
-import { Poll } from '../store/PollData';
+import { UIPoll, useLoadData } from '../store/Polls';
+import { Poll } from '../store/Polls';
 import { useIPFSBrowser } from '../store/Settings';
 import { PollPanel } from './PollPanel';
 
@@ -24,10 +24,11 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
   const [loading, setLoading] = React.useState(false)
   const ipfsBrowser = useIPFSBrowser()
   const contract = usePollContract()
-  const loadData = usePollUtils().loadData
-  const setPick = useAppState().setPick
-  const is_connected = useBeaconUtils().is_connected
-  const connect = useBeaconUtils().connect
+  const loadData = useLoadData()
+  const setPanel = useSetAppPanel()
+  const setPick = () => setPanel(APPPanel.PICK)
+  const connect = useConnect()
+  const is_connected = useIsConnected()
   const addPoll = async () => {
     setLoading(true)
     try {
@@ -115,7 +116,8 @@ const PollPreview = (arg : { uip : UIPoll | undefined }) => {
 }
 
 export const AddPoll = () => {
-  const setPick = useAppState().setPick
+  const setPanel = useSetAppPanel()
+  const setPick = () => setPanel(APPPanel.PICK)
   const [uiPoll, setUIPoll] = React.useState<UIPoll | undefined>(undefined)
   return <Container style={{ height: '100vh' }}>
     <IconButton sx={{ top : '72px', position: 'absolute' }} size="large" onClick={() => setPick()}><CloseIcon fontSize="inherit"/></IconButton>

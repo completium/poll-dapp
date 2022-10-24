@@ -5,7 +5,8 @@ export const [
   AlertsProvider,
   useAlertOpen,
   useAlertMsg,
-  useAlertUtils
+  useAlertSetOpen,
+  useAlertSetMsg
 ] = constate(() => {
     const [open, setOpen] = useState(false);
     const [msg, setMsg] = useState("");
@@ -13,5 +14,6 @@ export const [
   },
   (v) => v.open,
   (v) => v.msg,
-  (v) => v.utils
+  (v) => v.utils.setAlertOpen,
+  (v) => v.utils.setAlertMsg
 )

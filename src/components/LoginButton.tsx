@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import React from 'react';
 
-import { useWalletAddress, useBeaconUtils } from '../store/Beacon';
+import { useConnect, useWalletAddress } from '../store/Beacon';
 import { WalletInfo } from './WalletInfo';
 
 export const LoginButton = () => {
@@ -19,7 +19,7 @@ export const LoginButton = () => {
   const open = Boolean(anchorEl);
 
   const address = useWalletAddress()
-  const wallet = useBeaconUtils()
+  const connect = useConnect()
 
   if (address)
     return <div>
@@ -29,7 +29,7 @@ export const LoginButton = () => {
       <WalletInfo open={open} anchorEl={anchorEl} handlePopoverClose={handleClose} />
     </div>
   else
-    return <Button color="inherit" onClick={() => wallet.connect()}>
+    return <Button color="inherit" onClick={connect}>
       Login
     </Button>
 }

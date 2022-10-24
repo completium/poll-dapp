@@ -1,7 +1,7 @@
 import constate from 'constate';
 import { useState } from 'react';
 
-export enum UIState {
+export enum APPPanel {
   PICK,
   RESPOND,
   ADD
@@ -9,15 +9,21 @@ export enum UIState {
 
 export const [
   StateProvider,
-  useAppState,
+  useAppPanel,
+  useAppPoll,
+  useSetAppPanel,
+  useSetAppPoll
 ] = constate(() => {
-    const [state, setState] = useState<{ ui : UIState, selected : (number | undefined) }>({
-      ui : UIState.PICK,
-      selected : undefined
+    const [state, setState] = useState<{ panel : APPPanel, poll : (number | undefined) }>({
+      panel : APPPanel.PICK,
+      poll : undefined
     })
-    const setPick = () => { setState(s => { return { ...s, ui : UIState.PICK, selected : undefined } }) }
-    const setRespond = (id : number) => { setState(s => { return { ...s, ui : UIState.RESPOND, selected  : id } })}
-    const setAdd = () => { setState(s => { return { ...s, ui : UIState.ADD, selected : undefined } }) }
-    return { ui : state.ui, selected : state.selected, setPick : setPick, setRespond : setRespond, setAdd }
-  }
+    const set_panel = (p : APPPanel) => setState(s => { return { ...s, panel : p }})
+    const set_poll = (p : number) => setState(s => { return { ...s, panel: APPPanel.RESPOND, poll : p }})
+    return { state, set_panel, set_poll }
+  },
+  (v) => v.state.panel,
+  (v) => v.state.poll,
+  (v) => v.set_panel,
+  (v) => v.set_poll
 )
