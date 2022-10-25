@@ -1,10 +1,8 @@
-
-import { Bytes, Nat, pair_to_mich, string_to_mich, Option } from "@completium/archetype-ts-types";
-import {expect_to_fail, get_account, set_mockup, set_mockup_now, set_quiet} from "@completium/experiment-ts";
+import { Bytes, Nat, Option, pair_to_mich, string_to_mich } from "@completium/archetype-ts-types";
+import { expect_to_fail, get_account, set_mockup, set_mockup_now, set_quiet } from "@completium/experiment-ts";
+import assert from 'assert'
 
 import { poll, poll_container } from './binding/poll'
-
-const assert = require('assert')
 
 /* Accounts ---------------------------------------------------------------- */
 
@@ -47,7 +45,7 @@ const get_nb_responses = (polls : poll_container, poll_id : Nat, choice_id : Nat
 }
 
 const error_key_exists = (container : string) => {
-  return pair_to_mich([string_to_mich("\"KEY_EXISTS\""), string_to_mich(`\"${container}\"`)])
+  return pair_to_mich([string_to_mich("\"KEY_EXISTS\""), string_to_mich(`"${container}"`)])
 }
 
 /* Scenario ---------------------------------------------------------------- */
@@ -67,8 +65,8 @@ describe("[POLL] 'add_poll' entry", async () => {
   })
   it("'add' cannot be called with same hash", async () => {
     const b = Bytes.hex_encode(food_hash)
-    expect_to_fail(async () => {
-      await poll.add_poll(Bytes.hex_encode(food_hash), { as: alice });
+    await expect_to_fail(async () => {
+      await poll.add_poll(b, { as: alice });
     }, error_key_exists("poll_to_approve"))
   })
   it("add 'Dancer' poll", async () => {
@@ -86,7 +84,7 @@ describe("[POLL] 'add_poll' entry", async () => {
 })
 describe("[POLL] 'approve' entry", async () => {
   it("'approve' can only be called by owner", async () => {
-    expect_to_fail(async () => {
+    await expect_to_fail(async () => {
       await poll.approve(Bytes.hex_encode(food_hash), { as: bob });
     }, poll.errors.INVALID_CALLER)
   })
@@ -102,7 +100,7 @@ describe("[POLL] 'approve' entry", async () => {
   })
   it("'approve' cannot be called twice with same hash", async () => {
     const b = Bytes.hex_encode(food_hash)
-    expect_to_fail(async () => {
+    await expect_to_fail(async () => {
       await poll.approve(b, { as: alice });
     }, poll.errors.POLL_NOT_FOUND)
   })
@@ -119,7 +117,7 @@ describe("[POLL] 'approve' entry", async () => {
 })
 describe("[POLL] 'disapprove' entry", async () => {
   it("'disapprove' can only be called by owner", async () => {
-    expect_to_fail(async () => {
+    await expect_to_fail(async () => {
       await poll.disapprove(Bytes.hex_encode(squares_hash), { as: bob });
     }, poll.errors.INVALID_CALLER)
   })
@@ -132,12 +130,6 @@ describe("[POLL] 'disapprove' entry", async () => {
     assert(!exists_poll(polls_after, b))
     const has_poll = await poll.has_poll_to_approve_value(b)
     assert(!has_poll)
-  })
-  it("'disapprove' cannot be called twice with same hash", async () => {
-    const b = Bytes.hex_encode(squares_hash)
-    //expect_to_fail(async () => {
-      await poll.disapprove(b, { as: alice });
-    //}, poll.errors.POLL_NOT_FOUND)
   })
 })
 describe("[POLL] 'respond' entry", async () => {
@@ -159,7 +151,7 @@ describe("[POLL] 'respond' entry", async () => {
   it("responder cannot respond twice", async () => {
     const poll_id = new Nat(0)
     const choice_id = new Nat(1)
-    expect_to_fail(async () => {
+    await expect_to_fail(async () => {
       await poll.respond(poll_id, choice_id, { as : bob })
     }, poll.errors.f1)
   })
@@ -176,7 +168,7 @@ describe("[POLL] 'respond' entry", async () => {
 })
 describe("[POLL] 'remove' entry", async () => {
   it("'remove' can only be called by owner", async () => {
-    expect_to_fail(async () => {
+    await expect_to_fail(async () => {
       await poll.remove(new Nat(0), { as : bob })
     }, poll.errors.INVALID_CALLER)
   })
