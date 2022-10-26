@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 
 import { PollCard } from '../components/PollCard';
-import { usePolls } from '../store/Polls';
+import { usePolls } from '../contexts/Polls';
 
 export const Pick = () => {
   const polls = usePolls()

@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import React from 'react';
 
-import { useConnect, useWalletAddress } from '../store/Beacon';
+import { useConnect, useWalletAddress } from '../contexts/Beacon';
 import { WalletInfo } from './WalletInfo';
 
 export const LoginButton = () => {

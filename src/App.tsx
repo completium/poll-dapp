@@ -9,13 +9,13 @@ import { Add } from './routes/AddPage'
 import { ErrorPage } from './routes/ErrorPage'
 import { Pick } from './routes/PickPage'
 import { PollPage as Poll } from './routes/PollPage'
-import { AlertsProvider } from './store/Alerts';
-import { BeaconProvider } from './store/Beacon'
-import { EventsProvider } from './store/Events';
-import { ContractProvider } from './store/Contract';
-import { PollDataProvider } from './store/Polls';
-import { SettingsProvider, Theme, useTheme } from './store/Settings';
-import { TaquitoProvider } from './store/Taquito';
+import { AlertsProvider } from './contexts/Alerts';
+import { BeaconProvider } from './contexts/Beacon'
+import { EventsProvider } from './contexts/Events';
+import { ContractProvider } from './contexts/Contract';
+import { PollDataProvider } from './contexts/Polls';
+import { SettingsProvider, Theme, useTheme } from './contexts/Settings';
+import { TaquitoProvider } from './contexts/Taquito';
 
 import './App.css';
 

@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
-import { Poll } from "../store/Polls";
+import { Poll } from "../contexts/Polls";
 import { ChoicePanel } from "./ChoicePanel";
 
 const getResponseCount = (choice_id : number, responses : Array<[ number, number ]>) : number => {

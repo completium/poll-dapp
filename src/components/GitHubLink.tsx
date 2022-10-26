@@ -1,7 +1,7 @@
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { IconButton } from '@mui/material';
 
-import { useGitRepo } from '../store/Settings';
+import { useGitRepo } from '../contexts/Settings';
 
 export const GitHubLink = () => {
   const repo = useGitRepo()

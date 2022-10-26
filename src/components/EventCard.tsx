@@ -13,7 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import Tooltip from '@mui/material/Tooltip';
 import { forwardRef } from "react";
 
-import { useNetwork } from "../store/Settings";
+import { useNetwork } from "../contexts/Settings";
 
 export type EventCardProps = {
   data : EventData

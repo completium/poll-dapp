@@ -12,8 +12,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Popover from '@mui/material/Popover';
 
-import { useClearEvents, useEvents, useNbNewEvents, useOpenEvents } from '../store/Events';
-import { useEndpoint } from '../store/Settings';
+import { useClearEvents, useEvents, useNbNewEvents, useOpenEvents } from '../contexts/Events';
+import { useEndpoint } from '../contexts/Settings';
 import { EventCard } from './EventCard';
 
 const NotificationMenu = () => {

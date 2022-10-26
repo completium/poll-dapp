@@ -9,9 +9,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { PollPanel } from "../components/PollPanel";
-import { useConnect, useIsConnected, useWalletAddress } from "../store/Beacon";
-import { useContract } from "../store/Contract";
-import { Poll, useLoadResponses, usePolls, useLoadData } from "../store/Polls"
+import { useConnect, useIsConnected, useWalletAddress } from "../contexts/Beacon";
+import { useContract } from "../contexts/Contract";
+import { Poll, useLoadResponses, usePolls, useLoadData } from "../contexts/Polls"
 
 const getPoll = (polls : Array<Poll>, hash : string | undefined) : Poll | undefined => {
   const poll = polls.find(x => x.hash === hash)

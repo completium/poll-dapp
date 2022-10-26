@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from 'react';
 
-import { useDisconnect, useWalletAddress, useWalletName } from '../store/Beacon';
-import { useEndpoint, useNetwork } from '../store/Settings';
-import { useTezosToolkit } from '../store/Taquito';
+import { useDisconnect, useWalletAddress, useWalletName } from '../contexts/Beacon';
+import { useEndpoint, useNetwork } from '../contexts/Settings';
+import { useTezosToolkit } from '../contexts/Taquito';
 
 export const Address = (arg : { address : string | undefined }) => {
   return <Grid2 container spacing={0} alignItems="flex-end">

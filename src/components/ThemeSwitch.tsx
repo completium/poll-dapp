@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 
-import { Theme, useSwitchTheme, useTheme } from '../store/Settings';
+import { Theme, useSwitchTheme, useTheme } from '../contexts/Settings';
 
 // source : https://mui.com/material-ui/react-switch/
 const UISwitch = styled(Switch)(({ theme }) => ({

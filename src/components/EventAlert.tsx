@@ -2,7 +2,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import * as React from 'react';
 
-import { useAlertMsg, useAlertOpen, useAlertSetOpen } from '../store/Alerts';
+import { useAlertMsg, useAlertOpen, useAlertSetOpen } from '../contexts/Alerts';
 
 // source : https://mui.com/material-ui/react-snackbar/#main-content
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(

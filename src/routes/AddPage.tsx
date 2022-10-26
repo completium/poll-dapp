@@ -12,11 +12,11 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 import { PollPanel } from '../components/PollPanel';
-import { useConnect, useIsConnected } from '../store/Beacon';
-import { useContract } from '../store/Contract';
-import { UIPoll, useLoadData } from '../store/Polls';
-import { Poll } from '../store/Polls';
-import { useIPFSBrowser } from '../store/Settings';
+import { useConnect, useIsConnected } from '../contexts/Beacon';
+import { useContract } from '../contexts/Contract';
+import { UIPoll, useLoadData } from '../contexts/Polls';
+import { Poll } from '../contexts/Polls';
+import { useIPFSBrowser } from '../contexts/Settings';
 
 const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll | undefined>> }) => {
   const [uri, setURI] = React.useState('');

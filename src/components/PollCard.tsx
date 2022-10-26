@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate } from "react-router-dom";
 
-import { Poll } from '../store/Polls'
+import { Poll } from '../contexts/Polls'
 
 export const PollCard = (arg : { data : Poll }) => {
   const navigate = useNavigate()
