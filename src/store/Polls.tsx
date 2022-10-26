@@ -11,6 +11,7 @@ import { useIPFSBrowser } from './Settings';
 
 export interface Poll {
   id : number,
+  hash : string,
   utterance : string,
   img : string,
   choices : Array<string>
@@ -38,11 +39,13 @@ export const [
     const loadData = async () => {
       const poll_data = await contract.get_poll()
       const polls     = await Promise.all(poll_data.map(async ([poll_id, poll_value]) => {
+        const hash = poll_value.ipfs_hash.hex_decode()
         const url = ipfs + poll_value.ipfs_hash.hex_decode()
         const res = await fetch(url)
         const ui : UIPoll = await res.json()
         return {
           id        : poll_id.to_big_number().toNumber(),
+          hash      : hash,
           utterance : ui.utterance,
           img       : ui.img,
           choices   : ui.choices,

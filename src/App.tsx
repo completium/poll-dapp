@@ -1,14 +1,15 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { AddPoll } from './components/AddPoll';
 import { EventAlert } from './components/EventAlert';
-import { PickPoll } from './components/PickPoll';
-import { RespondPoll } from './components/RespondPoll';
 import { TopBar } from './components/TopBar'
+import { Add } from './routes/AddPage'
+import { ErrorPage } from './routes/ErrorPage'
+import { Pick } from './routes/PickPage'
+import { PollPage as Poll } from './routes/PollPage'
 import { AlertsProvider } from './store/Alerts';
-import { StateProvider, APPPanel, useAppPanel } from './store/AppState';
 import { BeaconProvider } from './store/Beacon'
 import { EventsProvider } from './store/Events';
 import { PollContractProvider } from './store/PollContract';
@@ -18,14 +19,25 @@ import { TaquitoProvider } from './store/Taquito';
 
 import './App.css';
 
-function MainPanel () {
-  const state = useAppPanel()
-  switch (state) {
-    case (APPPanel.PICK)    : return <PickPoll />
-    case (APPPanel.ADD)     : return <AddPoll />
-    case (APPPanel.RESPOND) : return <RespondPoll />
-  }
-}
+const router = createBrowserRouter([
+  {
+    path: "/poll-dapp",
+    element: <Pick />,
+  },
+  {
+    path: "/poll-dapp/add",
+    element: <Add />,
+  },
+  {
+    path: "/poll-dapp/poll/:hash",
+    element: <Poll />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  },
+]);
 
 function DApp() {
   const theme   = useTheme()
@@ -39,21 +51,19 @@ function DApp() {
       <TaquitoProvider>
         <BeaconProvider>
           <PollContractProvider>
-            <StateProvider>
-              <PollDataProvider>
-                <AlertsProvider>
-                  <EventsProvider>
-                    <Paper elevation={0}>
-                      <div style={{ height: '100vh', overflow: 'auto' }}>
-                        <TopBar></TopBar>
-                        <MainPanel />
-                        <EventAlert />
-                      </div>
-                    </Paper>
-                  </EventsProvider>
-                </AlertsProvider>
-              </PollDataProvider>
-            </StateProvider>
+            <PollDataProvider>
+              <AlertsProvider>
+                <EventsProvider>
+                  <Paper elevation={0}>
+                    <div style={{ height: '100vh', overflow: 'auto' }}>
+                    <TopBar></TopBar>
+                    <RouterProvider router={router} />
+                    <EventAlert />
+                    </div>
+                  </Paper>
+                </EventsProvider>
+              </AlertsProvider>
+            </PollDataProvider>
           </PollContractProvider>
         </BeaconProvider>
       </TaquitoProvider>

@@ -3,14 +3,12 @@ import Container from '@mui/material/Container';
 //import Grid2 from '@mui/material/Grid2';
 import Grid2 from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
-import { APPPanel, useSetAppPanel } from '../store/AppState';
+import { PollCard } from '../components/PollCard';
 import { usePolls } from '../store/Polls';
-import { PollCard } from './PollCard';
 
-export const PickPoll = () => {
-  const set_panel = useSetAppPanel()
-  const set_add = () => set_panel(APPPanel.ADD)
+export const Pick = () => {
   const polls = usePolls()
   return <Container>
     <Grid2 container direction="row" justifyContent="center" alignItems="center">
@@ -36,7 +34,7 @@ export const PickPoll = () => {
           <Typography variant="h5" sx={{ fontFamily : 'Dancing Script' }}>Want a new poll?</Typography>
         </Grid2>
         <Grid2>
-          <Button onClick={set_add} sx={{ ml: '18px', mt : '4px' }}>add poll</Button>
+          <Button component={Link} to="add" sx={{ ml: '18px', mt : '4px' }}>add poll</Button>
         </Grid2>
       </Grid2>
     </Grid2>

@@ -8,14 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { APPPanel, useAppPanel, useSetAppPanel } from '../store/AppState';
+import { PollPanel } from '../components/PollPanel';
 import { useConnect, useIsConnected } from '../store/Beacon';
 import { usePollContract } from '../store/PollContract';
 import { UIPoll, useLoadData } from '../store/Polls';
 import { Poll } from '../store/Polls';
 import { useIPFSBrowser } from '../store/Settings';
-import { PollPanel } from './PollPanel';
 
 const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll | undefined>> }) => {
   const [uri, setURI] = React.useState('');
@@ -25,8 +26,7 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
   const ipfsBrowser = useIPFSBrowser()
   const contract = usePollContract()
   const loadData = useLoadData()
-  const setPanel = useSetAppPanel()
-  const setPick = () => setPanel(APPPanel.PICK)
+  const navigate = useNavigate()
   const connect = useConnect()
   const is_connected = useIsConnected()
   const addPoll = async () => {
@@ -39,7 +39,7 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
       await loadData()
       setLoading(false)
       setIsValidURI(false)
-      setPick()
+      navigate("/poll-dapp")
     } catch (e) {
       setLoading(false)
     }
@@ -115,12 +115,10 @@ const PollPreview = (arg : { uip : UIPoll | undefined }) => {
   }
 }
 
-export const AddPoll = () => {
-  const setPanel = useSetAppPanel()
-  const setPick = () => setPanel(APPPanel.PICK)
+export const Add = () => {
   const [uiPoll, setUIPoll] = React.useState<UIPoll | undefined>(undefined)
   return <Container style={{ height: '100vh' }}>
-    <IconButton sx={{ top : '72px', position: 'absolute' }} size="large" onClick={() => setPick()}><CloseIcon fontSize="inherit"/></IconButton>
+    <IconButton component={Link} sx={{ top : '72px', position: 'absolute' }} size="large" to="/poll-dapp"><CloseIcon fontSize="inherit"/></IconButton>
     <Grid2 container justifyContent="center" alignItems="center" sx={{ height : 'calc(100% - 280px)', mt: '140px', mb : '140px' }}>
       <Grid2 md={6} xs={12}>
         <AddForm setUIPoll={setUIPoll} />

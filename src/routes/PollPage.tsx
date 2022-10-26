@@ -6,33 +6,31 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { APPPanel, useAppPoll, useSetAppPanel } from "../store/AppState"
+import { PollPanel } from "../components/PollPanel";
 import { useConnect, useIsConnected, useWalletAddress } from "../store/Beacon";
 import { usePollContract } from "../store/PollContract";
 import { Poll, useLoadResponses, usePolls } from "../store/Polls"
-import { PollPanel } from "./PollPanel";
 
-const getPoll = (polls : Array<Poll>, id : number) : Poll => {
-  const poll = polls.find(x => x.id === id)
+const getPoll = (polls : Array<Poll>, hash : string | undefined) : Poll => {
+  const poll = polls.find(x => x.hash === hash)
   if (poll !== undefined) {
     return poll
   }
-  throw new Error("getPoll: '" + id + "' not found")
+  throw new Response("Not Found", { status: 404 })
 }
 
-export const RespondPoll = () => {
+export const PollPage = () => {
   const [choice, setChoice] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   const contract = usePollContract()
   const polls = usePolls()
-  const selected = useAppPoll()
-  const setPanel = useSetAppPanel()
-  const setPick = () => setPanel(APPPanel.PICK)
+  const { hash } = useParams()
+  const poll = getPoll(polls, hash)
   const loadResponses = useLoadResponses()
-  if (selected === undefined) throw new Error("PollPanel : 'selected' not defined")
   const [bar, setBar] = useState(false)
-  const poll = getPoll(polls, selected)
   const total = poll.responses.reduce((acc, x) => { return acc + x[1] }, 0)
   const wallet_address = useWalletAddress()
   const connect =useConnect()
@@ -44,7 +42,7 @@ export const RespondPoll = () => {
         if (!is_connected()) {
           await connect()
         }
-        await contract.respond(new Nat(selected), new Nat(choice), {})
+        await contract.respond(new Nat(poll.id), new Nat(choice), {})
         setLoading(false)
         setChoice(undefined)
         await loadResponses(poll.id)
@@ -68,7 +66,7 @@ export const RespondPoll = () => {
     }
   }, [])
   return <Container>
-    <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={setPick}><CloseIcon fontSize="inherit"/></IconButton>
+    <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={() => navigate("/poll-dapp")}><CloseIcon fontSize="inherit"/></IconButton>
     <Grid2 container direction="row" justifyContent="center" alignItems="center">
       <PollPanel preview={false} poll={poll} choice={choice} setChoice={setChoice} bar={bar} total={total}/>
       <Grid2 xs={12} sx={{ mt : '18px', mb : '18px' }} container justifyContent='center'>

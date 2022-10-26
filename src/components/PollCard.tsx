@@ -3,14 +3,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import { useNavigate } from "react-router-dom";
 
-import { useSetAppPoll } from '../store/AppState';
 import { Poll } from '../store/Polls'
 
 export const PollCard = (arg : { data : Poll }) => {
-  const set_app_poll = useSetAppPoll()
+  const navigate = useNavigate()
   return (
-    <Card sx={{ m: '18px', maxWidth: 345, cursor : 'pointer' }} onClick={() => set_app_poll(arg.data.id)}>
+    <Card sx={{ m: '18px', maxWidth: 345, cursor : 'pointer' }} onClick={() => navigate("poll/"+arg.data.hash)}>
       <CardMedia
         component="img"
         height="140"
