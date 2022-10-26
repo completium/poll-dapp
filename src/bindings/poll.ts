@@ -1,6 +1,7 @@
-import * as ex from "@completium/dapp-ts";
 import * as att from "@completium/archetype-ts-types";
+import * as ex from "@completium/dapp-ts";
 import * as el from "@completium/event-listener";
+
 export class Response implements att.ArchetypeType {
     constructor(public responder_addr: att.Address, public poll_id: att.Nat, public response: att.Nat) { }
     toString(): string {
@@ -154,9 +155,9 @@ export class Poll {
         throw new Error("Contract not initialised");
     }
     async deploy(owner: att.Address, params: Partial<ex.Parameters>) {
-        const address = await ex.deploy("./contracts/poll.arl", {
+        const address = (await ex.deploy("./contracts/poll.arl", {
             owner: owner.to_mich()
-        }, params);
+        }, params)).address;
         this.address = address;
     }
     async declare_ownership(candidate: att.Address, params: Partial<ex.Parameters>): Promise<any> {
@@ -289,7 +290,7 @@ export class Poll {
                 att.Nat,
                 att.Nat
             ]> = [];
-            for (let e of mich.entries()) {
+            for (let e of mich.value.entries()) {
                 res.push([(x => { return new att.Nat(x); })(e[0]), (x => { return new att.Nat(x); })(e[1])]);
             }
             return res;
@@ -299,7 +300,7 @@ export class Poll {
     async view_already_responded(pk: att.Nat, params: Partial<ex.Parameters>): Promise<boolean> {
         if (this.address != undefined) {
             const mich = await ex.exec_view(this.get_address(), "already_responded", view_already_responded_arg_to_mich(pk), params);
-            return mich;
+            return mich.value.prim ? (mich.value.prim == "True" ? true : false) : mich.value;
         }
         throw new Error("Contract not initialised");
     }
@@ -320,7 +321,7 @@ export class Poll {
     async get_paused(): Promise<boolean> {
         if (this.address != undefined) {
             const storage = await ex.get_storage(this.address);
-            return storage.paused;
+            return storage.paused.prim ? (storage.paused.prim == "True" ? true : false) : storage.paused;
         }
         throw new Error("Contract not initialised");
     }
@@ -483,3 +484,4 @@ export class Poll {
     };
 }
 export const poll = new Poll();
+

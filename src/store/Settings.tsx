@@ -28,10 +28,10 @@ export const [
   () => {
     const [settingState, setState] = useState({
       app_name        : 'Poll DAPP',
-      endpoint        : 'https://ghostnet.ecadinfra.com',
-      poll_contract   : 'KT1FcUNmyZ255yyfqWL3GC1AGqSY2vKqYwEg',
+      endpoint        : 'https://kathmandunet.ecadinfra.com', //'https://ghostnet.ecadinfra.com',
+      poll_contract   : 'KT1Vai5WTPysTfEYZ4p1bNRifeciL3WBdNej',//'KT1FcUNmyZ255yyfqWL3GC1AGqSY2vKqYwEg',
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
-      network         :  NetworkType.GHOSTNET,
+      network         :  NetworkType.KATHMANDUNET,//NetworkType.GHOSTNET,
       theme           :  Theme.Dark,
       git_repo        : 'https://github.com/completium/poll-dapp/tree/main/src'
     });
