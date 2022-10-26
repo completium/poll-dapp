@@ -6,7 +6,7 @@
   "dependencies": {
     "@airgap/beacon-sdk": "^3.2.0",
     "@completium/archetype-ts-types": "^0.0.10",
-    "@completium/dapp-ts": "^0.0.8",
+    "@completium/dapp-ts": "^0.0.9",
     "@completium/event-listener": "^0.0.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
