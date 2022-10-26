@@ -11,17 +11,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PollPanel } from "../components/PollPanel";
 import { useConnect, useIsConnected, useWalletAddress } from "../store/Beacon";
 import { usePollContract } from "../store/PollContract";
-import { Poll, useLoadResponses, usePolls } from "../store/Polls"
+import { Poll, useLoadResponses, usePolls, useLoadData } from "../store/Polls"
 
-const getPoll = (polls : Array<Poll>, hash : string | undefined) : Poll => {
+const getPoll = (polls : Array<Poll>, hash : string | undefined) : Poll | undefined => {
   const poll = polls.find(x => x.hash === hash)
   if (poll !== undefined) {
     return poll
   }
-  throw new Response("Not Found", { status: 404 })
+  return undefined
 }
 
 export const PollPage = () => {
+  const [refresh, setRefresh] = useState(false)
   const [choice, setChoice] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -29,16 +30,17 @@ export const PollPage = () => {
   const polls = usePolls()
   const { hash } = useParams()
   const poll = getPoll(polls, hash)
+  const loadData = useLoadData()
   const loadResponses = useLoadResponses()
   const [bar, setBar] = useState(false)
-  const total = poll.responses.reduce((acc, x) => { return acc + x[1] }, 0)
+  const total = poll ? poll.responses.reduce((acc, x) => { return acc + x[1] }, 0) : 0
   const wallet_address = useWalletAddress()
   const connect =useConnect()
   const is_connected = useIsConnected()
   const respond = async () => {
     setLoading(true)
     try {
-      if (choice !== undefined) {
+      if (poll !== undefined && choice !== undefined) {
         if (!is_connected()) {
           await connect()
         }
@@ -54,18 +56,27 @@ export const PollPage = () => {
     }
   }
   useEffect(() => {
-    if (wallet_address) {
-      const load_responses = async () => {
-        const responded = await contract.view_already_responded(new Nat(poll.id), { as : new Address(wallet_address) })
-        if (responded) {
-          await loadResponses(poll.id)
-          setBar(true)
+    if (poll) {
+      if (wallet_address) {
+        const load_responses = async () => {
+          const responded = await contract.view_already_responded(new Nat(poll.id), { as : new Address(wallet_address) })
+          if (responded) {
+            await loadResponses(poll.id)
+            setBar(true)
+          }
         }
+        load_responses()
       }
-      load_responses()
+    } else {
+      const load_data = async () => {
+        await loadData()
+      }
+      load_data()
+      setRefresh(!refresh)
     }
-  }, [])
-  return <Container>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poll])
+  return (poll ? <Container>
     <IconButton sx={{ mt: '92px', position: 'fixed' }} size="large" onClick={() => navigate("/poll-dapp")}><CloseIcon fontSize="inherit"/></IconButton>
     <Grid2 container direction="row" justifyContent="center" alignItems="center">
       <PollPanel preview={false} poll={poll} choice={choice} setChoice={setChoice} bar={bar} total={total}/>
@@ -79,5 +90,5 @@ export const PollPage = () => {
         </LoadingButton>
       </Grid2>
     </Grid2>
-  </Container>
+  </Container> : <div/>)
 }

@@ -59,17 +59,19 @@ export const [
     const loadResponses = async (poll_id : number) => {
       const responses = await contract.view_get_responses(new Nat(poll_id), {})
       setPolls(ps => {
-        return ps.map(p => {
-          if (p.id === poll_id) {
-            return { ...p, responses : nats_to_numbers(responses) }
-          } else return p
-        })
+        for (let i = 0; i < ps.length; i++) {
+          if (ps[i].id === poll_id) {
+            ps[i].responses = nats_to_numbers(responses)
+          }
+        }
+        return ps
       })
     }
 
     useEffect(() => {
       // load polls' ui data
       loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return { polls, utils : { loadResponses, loadData } }

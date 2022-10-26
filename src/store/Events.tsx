@@ -63,6 +63,7 @@ function useEventsState() {
       })
     };
     startListener()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return { events, nbNewEvents, openEvents, addEvent, clearEvents };
 }
