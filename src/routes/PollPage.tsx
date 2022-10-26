@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { PollPanel } from "../components/PollPanel";
 import { useConnect, useIsConnected, useWalletAddress } from "../store/Beacon";
-import { usePollContract } from "../store/PollContract";
+import { useContract } from "../store/Contract";
 import { Poll, useLoadResponses, usePolls, useLoadData } from "../store/Polls"
 
 const getPoll = (polls : Array<Poll>, hash : string | undefined) : Poll | undefined => {
@@ -26,7 +26,7 @@ export const PollPage = () => {
   const [choice, setChoice] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const contract = usePollContract()
+  const contract = useContract()
   const polls = usePolls()
   const { hash } = useParams()
   const poll = getPoll(polls, hash)

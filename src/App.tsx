@@ -12,7 +12,7 @@ import { PollPage as Poll } from './routes/PollPage'
 import { AlertsProvider } from './store/Alerts';
 import { BeaconProvider } from './store/Beacon'
 import { EventsProvider } from './store/Events';
-import { PollContractProvider } from './store/PollContract';
+import { ContractProvider } from './store/Contract';
 import { PollDataProvider } from './store/Polls';
 import { SettingsProvider, Theme, useTheme } from './store/Settings';
 import { TaquitoProvider } from './store/Taquito';
@@ -50,7 +50,7 @@ function DApp() {
     <ThemeProvider theme={uiTheme}>
       <TaquitoProvider>
         <BeaconProvider>
-          <PollContractProvider>
+          <ContractProvider>
             <PollDataProvider>
               <AlertsProvider>
                 <EventsProvider>
@@ -64,7 +64,7 @@ function DApp() {
                 </EventsProvider>
               </AlertsProvider>
             </PollDataProvider>
-          </PollContractProvider>
+          </ContractProvider>
         </BeaconProvider>
       </TaquitoProvider>
     </ThemeProvider>

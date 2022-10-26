@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ApprovePoll, NewPoll, Response } from '../bindings/poll'
 import { useAlertSetMsg, useAlertSetOpen } from "./Alerts";
-import { usePollContract } from "./PollContract";
+import { useContract } from "./Contract";
 import { useLoadResponses } from "./Polls";
 import { useEndpoint } from "./Settings";
 
@@ -25,7 +25,7 @@ function useEventsState() {
   const [events, setEvents] = useState<Array<EventData>>([]);
   const [nbNewEvents, setNbEvents] = useState(0);
   const endpoint = useEndpoint()
-  const contract = usePollContract()
+  const contract = useContract()
   const setAlertMsg = useAlertSetMsg()
   const setAlerOpen = useAlertSetOpen()
   const openEvents = useCallback(() => setNbEvents(prev => 0), [])

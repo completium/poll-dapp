@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import { PollPanel } from '../components/PollPanel';
 import { useConnect, useIsConnected } from '../store/Beacon';
-import { usePollContract } from '../store/PollContract';
+import { useContract } from '../store/Contract';
 import { UIPoll, useLoadData } from '../store/Polls';
 import { Poll } from '../store/Polls';
 import { useIPFSBrowser } from '../store/Settings';
@@ -24,7 +24,7 @@ const AddForm = (arg : { setUIPoll : React.Dispatch<React.SetStateAction<UIPoll 
   const [isValidURI, setIsValidURI] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const ipfsBrowser = useIPFSBrowser()
-  const contract = usePollContract()
+  const contract = useContract()
   const loadData = useLoadData()
   const navigate = useNavigate()
   const connect = useConnect()

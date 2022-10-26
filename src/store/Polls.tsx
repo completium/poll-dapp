@@ -2,7 +2,7 @@ import { Nat } from '@completium/archetype-ts-types';
 import constate from 'constate';
 import { useEffect, useState } from 'react';
 
-import { usePollContract } from './PollContract';
+import { useContract } from './Contract';
 import { useIPFSBrowser } from './Settings';
 
 // Food    : QmZ8GxAwPvVDEtGxyUmfbB1dtmrdDR6tmMv9HUATaippqU
@@ -34,7 +34,7 @@ export const [
 ] = constate(() => {
     const [ polls, setPolls ] = useState<Array<Poll>>([])
     const ipfs = useIPFSBrowser()
-    const contract = usePollContract()
+    const contract = useContract()
 
     const loadData = async () => {
       const poll_data = await contract.get_poll()
