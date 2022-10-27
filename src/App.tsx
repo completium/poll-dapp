@@ -2,6 +2,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { EventAlert } from './components/EventAlert';
 import { TopBar } from './components/TopBar'
@@ -40,10 +41,11 @@ const router = createBrowserRouter([
 ]);
 
 function DApp() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme   = useTheme()
   const uiTheme = createTheme({
     palette: {
-      mode: theme === Theme.Dark ? 'dark' : 'light',
+      mode: theme === Theme.Default && prefersDarkMode ? 'dark' : (theme === Theme.Dark ? 'dark' : 'light'),
     },
   });
   return (
