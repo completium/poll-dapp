@@ -54,7 +54,7 @@ const UISwitch = styled(Switch)(({ theme }) => ({
 export const ThemeSwitch = () => {
   const theme = useTheme()
   const switchTheme = useSwitchTheme()
-  return <UISwitch sx={{ ml: 'auto', mr: '8px' }}
+  return <UISwitch
     checked={theme === Theme.Light}
     onChange={switchTheme}
     inputProps={{ 'aria-label': 'switch-theme' }}

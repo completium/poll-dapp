@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 import { EventNotifications } from './EventNotifications';
 import { GitHubLink } from './GitHubLink';
+import { HelpLink } from './HelpLink';
 import { LoginButton } from './LoginButton';
 import { TezosIcon } from './TezosIcon';
 import { ThemeSwitch } from './ThemeSwitch';
@@ -14,9 +15,10 @@ export const TopBar = () => {
       <AppBar position="fixed">
         <Toolbar>
           <TezosIcon />
-          <ThemeSwitch />
+          <HelpLink />
           <GitHubLink />
           <EventNotifications />
+          <ThemeSwitch />
           <LoginButton />
         </Toolbar>
       </AppBar>

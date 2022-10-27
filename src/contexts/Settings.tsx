@@ -23,6 +23,7 @@ export const [
   useNetwork,
   useIPFSBrowser,
   useGitRepo,
+  useHelpUrl,
   useSwitchTheme,
 ] = constate(
   () => {
@@ -33,7 +34,8 @@ export const [
       ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
       network         :  NetworkType.GHOSTNET,
       theme           :  Theme.Dark,
-      git_repo        : 'https://github.com/completium/poll-dapp/tree/main/src'
+      git_repo        : 'https://github.com/completium/poll-dapp/tree/main',
+      help            : 'https://archetype-lang.org/docs/dapps/example/'
     });
     const switchTheme = () => { setState(s => { return { ...s, theme : switch_theme(s.theme) }}) }
     return { settingState, setters : { switchTheme } };
@@ -45,5 +47,6 @@ export const [
   v => v.settingState.network,
   v => v.settingState.ipfs_browser,
   v => v.settingState.git_repo,
+  v => v.settingState.help,
   v => v.setters.switchTheme
 );
