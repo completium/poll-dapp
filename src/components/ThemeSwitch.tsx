@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { Theme, useSwitchTheme, useTheme } from '../contexts/Settings';
 
@@ -52,10 +53,11 @@ const UISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export const ThemeSwitch = () => {
+  const defaultDark = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useTheme()
   const switchTheme = useSwitchTheme()
   return <UISwitch
-    checked={theme === Theme.Light}
+    checked={(theme === Theme.Default && !defaultDark) || theme === Theme.Light}
     onChange={switchTheme}
     inputProps={{ 'aria-label': 'switch-theme' }}
   />

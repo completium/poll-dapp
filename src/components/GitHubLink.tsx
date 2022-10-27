@@ -5,5 +5,5 @@ import { useGitRepo } from '../contexts/Settings';
 
 export const GitHubLink = () => {
   const repo = useGitRepo()
-  return <IconButton onClick={() => window.open(repo, "_blank")}><GitHubIcon /></IconButton>
+  return <IconButton onClick={() => window.open(repo, "_blank")} sx={{ color : 'white' }}><GitHubIcon /></IconButton>
 }

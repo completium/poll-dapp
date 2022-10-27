@@ -94,6 +94,7 @@ export const EventNotifications = () => {
       <IconButton
         size="large"
         onClick={handleClick}
+        sx={{ color : 'white' }}
         >
         <Badge badgeContent={nbNewEvents} color="error">
           <NotificationsIcon />
