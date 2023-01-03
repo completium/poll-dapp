@@ -35,6 +35,7 @@ export const [
       endpoint        : 'https://ghostnet.ecadinfra.com',
       contract        : 'KT1FcUNmyZ255yyfqWL3GC1AGqSY2vKqYwEg',
       ipfs_browser    : 'https://gateway.pinata.cloud/ipfs/',
+      network         :  NetworkType.GHOSTNET,
       theme           :  Theme.Default,
       git_repo        : 'https://github.com/completium/poll-dapp/tree/main',
       help            : 'https://archetype-lang.org/docs/dapps/example/'
