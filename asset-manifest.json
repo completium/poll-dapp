@@ -1,14 +1,16 @@
 {
   "files": {
     "main.css": "/poll-dapp/static/css/main.549473de.css",
-    "main.js": "/poll-dapp/static/js/main.367553ac.js",
+    "main.js": "/poll-dapp/static/js/main.3d278be9.js",
+    "static/js/400.89b4495a.chunk.js": "/poll-dapp/static/js/400.89b4495a.chunk.js",
     "static/js/787.dddd04ca.chunk.js": "/poll-dapp/static/js/787.dddd04ca.chunk.js",
     "index.html": "/poll-dapp/index.html",
-    "main.367553ac.js.map": "/poll-dapp/static/js/main.367553ac.js.map",
+    "main.3d278be9.js.map": "/poll-dapp/static/js/main.3d278be9.js.map",
+    "400.89b4495a.chunk.js.map": "/poll-dapp/static/js/400.89b4495a.chunk.js.map",
     "787.dddd04ca.chunk.js.map": "/poll-dapp/static/js/787.dddd04ca.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.549473de.css",
-    "static/js/main.367553ac.js"
+    "static/js/main.3d278be9.js"
   ]
 }
