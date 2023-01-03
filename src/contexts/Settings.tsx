@@ -1,6 +1,5 @@
 import { NetworkType } from "@airgap/beacon-sdk";
 import useMediaQuery from '@mui/material/useMediaQuery';
-
 import constate from "constate";
 import { useState } from 'react';
 
@@ -35,8 +34,7 @@ export const [
       app_name        : 'Poll DAPP',
       endpoint        : 'https://ghostnet.ecadinfra.com',
       contract        : 'KT1FcUNmyZ255yyfqWL3GC1AGqSY2vKqYwEg',
-      ipfs_browser    : 'https://api.ipfsbrowser.com/ipfs/get.php?hash=',
-      network         :  NetworkType.GHOSTNET,
+      ipfs_browser    : 'https://gateway.pinata.cloud/ipfs/',
       theme           :  Theme.Default,
       git_repo        : 'https://github.com/completium/poll-dapp/tree/main',
       help            : 'https://archetype-lang.org/docs/dapps/example/'
