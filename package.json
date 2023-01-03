@@ -5,16 +5,16 @@
   "private": true,
   "dependencies": {
     "@airgap/beacon-sdk": "^3.2.0",
-    "@completium/archetype-ts-types": "^0.0.10",
-    "@completium/dapp-ts": "^0.0.9",
+    "@completium/archetype-ts-types": "^0.1.2",
+    "@completium/dapp-ts": "^0.1.4",
     "@completium/event-listener": "^0.0.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/lab": "^5.0.0-alpha.102",
     "@mui/material": "^5.10.8",
-    "@taquito/beacon-wallet": "^14.0.0",
-    "@taquito/taquito": "^14.0.0",
+    "@taquito/beacon-wallet": "^15.0.0",
+    "@taquito/taquito": "^15.0.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -37,7 +37,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "gen-binding": "completium-cli generate binding-dapp-ts _ --input-path ./contracts/contracts --output-path ./src/bindings"
+    "gen-binding": "completium-cli generate binding-dapp-ts _ --input-path ./poll-contract/contracts/ --output-path ./src/bindings/"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@completium/completium-cli": "0.4.62",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
