@@ -1,0 +1,60 @@
+# This is a basic workflow that is manually triggered
+
+name: Poll Contract CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "greet"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-compiler:
+          - 18.x
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: add serokell ppa
+      run: sudo add-apt-repository ppa:serokell/tezos && sudo apt-get update
+
+    - name: install tezos-client
+      run: sudo apt-get install -y apt-transport-https tezos-client
+
+    - name: alias octez-client
+      run: alias octez-client=tezos-client
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './poll-contract/package-lock.json'
+
+    - name: install
+      working-directory: ./poll-contract
+      run: npm ci
+
+    - name: completium_init
+      working-directory: ./poll-contract
+      run: npm run completium_init
+
+    - name: mockup_init
+      working-directory: ./poll-contract
+      run: npm run mockup_init
+
+    - name: test
+      working-directory: ./poll-contract
+      run: npm run test

@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "test": "ts-mocha --timeout 0 --slow 99999999999999999 ./tests/*.ts",
-    "gen-binding": "completium-cli run binder-ts"
+    "gen-binding": "completium-cli run binder-ts",
+    "completium_init": "completium-cli init",
+    "mockup_init": "completium-cli mockup init"
   },
   "dependencies": {
     "@completium/archetype-ts-types": "latest",
