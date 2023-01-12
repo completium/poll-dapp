@@ -9,10 +9,10 @@
     "mockup_init": "completium-cli mockup init"
   },
   "dependencies": {
-    "@completium/archetype-ts-types": "latest",
-    "@completium/completium-cli": "latest",
-    "@completium/experiment-ts": "latest",
-    "@completium/event-listener": "latest"
+    "@completium/archetype-ts-types": "0.1.2",
+    "@completium/completium-cli": "0.4.63",
+    "@completium/experiment-ts": "0.1.7",
+    "@completium/event-listener": "0.0.4"
   },
   "devDependencies": {
     "@types/expect": "^24.3.0",
