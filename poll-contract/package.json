@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@completium/archetype-ts-types": "0.1.2",
-    "@completium/completium-cli": "0.4.63",
+    "@completium/completium-cli": "0.4.64",
     "@completium/experiment-ts": "0.1.7",
     "@completium/event-listener": "0.0.4"
   },
