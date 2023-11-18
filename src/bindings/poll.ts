@@ -1,7 +1,6 @@
 import * as ex from "@completium/dapp-ts";
 import * as att from "@completium/archetype-ts-types";
 import * as el from "@completium/event-listener";
-
 export class Response implements att.ArchetypeType {
     constructor(public responder_addr: att.Address, public poll_id: att.Nat, public response: att.Nat) { }
     toString(): string {
@@ -156,12 +155,6 @@ export class Poll {
             return await ex.get_balance(new att.Address(this.address));
         }
         throw new Error("Contract not initialised");
-    }
-    async deploy(owner: att.Address, params: Partial<ex.Parameters>) {
-        const address = (await ex.deploy("./contracts/poll.arl", {
-            owner: owner.to_mich()
-        }, params)).address;
-        this.address = address;
     }
     async declare_ownership(candidate: att.Address, params: Partial<ex.Parameters>): Promise<att.CallResult> {
         if (this.address != undefined) {
@@ -417,7 +410,7 @@ export class Poll {
         if (this.address != undefined) {
             el.registerEvent({ source: this.address, filter: tag => { return tag == "Response"; }, process: (raw: any, data: el.EventData | undefined) => {
                     const event = (x => {
-                        return Response.from_mich(x);
+                        return Response.from_mich((att.normalize(x) as att.Micheline));
                     })(raw);
                     ep(event, data);
                 } });
@@ -429,7 +422,7 @@ export class Poll {
         if (this.address != undefined) {
             el.registerEvent({ source: this.address, filter: tag => { return tag == "NewPoll"; }, process: (raw: any, data: el.EventData | undefined) => {
                     const event = (x => {
-                        return NewPoll.from_mich(x);
+                        return NewPoll.from_mich((att.normalize(x) as att.Micheline));
                     })(raw);
                     ep(event, data);
                 } });
@@ -441,7 +434,7 @@ export class Poll {
         if (this.address != undefined) {
             el.registerEvent({ source: this.address, filter: tag => { return tag == "ApprovePoll"; }, process: (raw: any, data: el.EventData | undefined) => {
                     const event = (x => {
-                        return ApprovePoll.from_mich(x);
+                        return ApprovePoll.from_mich((att.normalize(x) as att.Micheline));
                     })(raw);
                     ep(event, data);
                 } });
