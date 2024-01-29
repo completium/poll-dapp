@@ -37,7 +37,11 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "gen-binding": "completium-cli generate binding-dapp-ts _ --input-path ./poll-contract/contracts/ --output-path ./src/bindings/"
+    "gen-binding-dapp": "completium-cli generate binding-dapp-ts _ --input-path ./poll-contract/contracts/ --output-path ./src/bindings/",
+    "test:contracts": "ts-mocha --timeout 0 --slow 99999999999999999 ./tests/*.ts",
+    "gen-binding": "completium-cli run binder-ts",
+    "completium_init": "completium-cli init",
+    "mockup_init": "completium-cli mockup init"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +63,10 @@
   },
   "devDependencies": {
     "@completium/completium-cli": "0.4.98",
+    "@completium/experiment-ts": "0.1.9",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "latest",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
@@ -69,6 +77,14 @@
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^4.7.4",
     "url": "^0.11.0"
+  },
+  "completium": {
+    "binding_path": "./tests/binding/",
+    "build_path": "./build/",
+    "contracts_path": "./contracts/",
+    "tests_path": "./tests/"
   }
 }
